@@ -21,14 +21,22 @@ int main() {
                 std::cout << "Enter file path: ";
                 std::cin >> filePath;
                 loader.loadGraphFromCSV(filePath);
+                std::cout << "Graph loaded successfully.\n";
                 break;
             case 2:
-                std::cout << "Shortest Tour Cost: " << tsp.findShortestTour(loader.getGraph()) << std::endl;
+                if (loader.isGraphLoaded()) {
+                    std::cout << "Shortest Tour Cost: " << tsp.findShortestTour(loader.getGraph()) << std::endl;
+                } else {
+                    std::cout << "Please load a graph first.\n";
+                }
                 break;
             case 3:
+                std::cout << "Exiting program.\n";
                 return 0;
             default:
-                std::cout << "Invalid choice." << std::endl;
+                std::cout << "Invalid choice. Please try again.\n";
         }
     } while (true);
+
+    return 0;
 }
