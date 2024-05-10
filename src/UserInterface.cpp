@@ -25,12 +25,14 @@ void UserInterface::displayMainMenu() {
         case 1:
             this->getGraph();
             displayMainMenu();
+            return;
         case 2:
             this->displayBacktrackingResult();
             displayMainMenu();
+            return;
         case 3:
             this->displayFarewell();
-            break;
+            return;
         default:
             std::cout << "Invalid key!\n";
             displayMainMenu();

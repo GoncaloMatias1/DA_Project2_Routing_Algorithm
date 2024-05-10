@@ -10,7 +10,7 @@ GraphController::GraphController(std::vector<std::vector<double>> graph_) {
 }
 
 GraphController::GraphController(std::vector<std::vector<double>> graph_,
-                                 std::unordered_map<int, std::pair<double, double>> coords) {
+                                 std::unordered_map<int, Coordinate> coords) {
     this->graph = graph_;
     this->nodes = coords;
 }
@@ -69,6 +69,22 @@ bool GraphController::Bound(uint16_t curr_idx, double pathSum, const std::set<ui
 
 bool GraphController::allVerticesVisited(const std::set<uint16_t> &visited) const{
     return visited.size() == this->graph.size();
+}
+
+double GraphController::convertToRadians(double coord) {
+    return coord * M_PI / 180;
+}
+
+double GraphController::haversine(Coordinate coo1, Coordinate coo2) {
+    Coordinate coo1_rad = {convertToRadians(coo1.latitude), convertToRadians(coo1.longitude)};
+    Coordinate coo2_rad = {convertToRadians(coo2.latitude), convertToRadians(coo2.longitude)};
+
+    Coordinate delta_rad = {coo2_rad.latitude - coo1_rad.latitude, coo2_rad.longitude - coo1_rad.longitude};
+
+    double aux = pow(sin(delta_rad.latitude / 2) , 2) + cos(coo1_rad.latitude) * cos(coo2_rad.latitude) * pow(sin(delta_rad.longitude / 2), 2);
+    double c = 2.0 * atan2(sqrt(aux), sqrt(1.0 - aux));
+    double earthRadius = 6371000;
+    return earthRadius * c;
 }
 
 

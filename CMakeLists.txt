@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(include
-                    data)
+        data)
 
 add_executable(Route_x86
         main.cpp
