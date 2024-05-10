@@ -121,7 +121,7 @@ std::pair<std::vector<std::vector<double>>, std::unordered_map<int, std::pair<do
     std::unordered_map<int, std::pair<double, double>> coords;
     uint16_t graphSize = 0;
 
-    std::string path = "../data/Real-world Graphs/" + fileName + "/";
+    std::string path = "../data/Real_world_Graphs/" + fileName + "/";
     std::string edges = path + "edges.csv";
     std::string nodes = path + "nodes.csv";
 
