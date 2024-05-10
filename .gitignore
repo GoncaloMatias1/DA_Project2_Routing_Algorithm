@@ -33,3 +33,5 @@
 
 data/Real_world_Graphs/*
 /cmake-build-debug/
+
+.idea/
