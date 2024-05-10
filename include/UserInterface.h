@@ -21,6 +21,7 @@ public:
 
     const std::string& getGraph();
     void displayMainMenu();
+    void displayBacktrackingResult();
     void displayFarewell();
 };
 

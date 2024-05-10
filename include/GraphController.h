@@ -11,10 +11,11 @@ private:
     std::vector<std::vector<double>> graph;
     std::unordered_map<int, std::pair<double, double>> nodes; // Real-World graph nodes that hold the coordinates
     double min_distance = std::numeric_limits<double>::infinity();
+    std::vector<uint16_t> minPath;
 
     // AUX fucntions for backtrack
-    void recursiveBacktracking(uint16_t curr_idx, uint16_t target_idx, double distance,const std::set<uint16_t> &
-    visited) ;
+    void recursiveBacktracking(uint16_t curr_idx, uint16_t target_idx, double distance = 0,const std::set<uint16_t> &
+    visited = {}, std::vector<uint16_t> path = {});
     bool Bound(uint16_t curr_idx, double pathSum, const std::set<uint16_t>& visited) const;
     bool allVerticesVisited(const std::set<uint16_t>& visited) const;
 
@@ -26,7 +27,7 @@ public:
 
     std::vector<double> getAdj(uint16_t idx) const;
     bool setWeight(uint16_t source, uint16_t dest, double weight);
-    double minHamiltonianCicle();
+    std::pair<double, std::vector<uint16_t>> minHamiltonianCicle();
 
 };
 

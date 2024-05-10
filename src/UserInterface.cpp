@@ -6,6 +6,7 @@
 
 UserInterface::UserInterface() {
     this->graphLoader = new GraphLoader();
+    this->controller = nullptr;
 }
 
 void UserInterface::bootload() {
@@ -25,7 +26,7 @@ void UserInterface::displayMainMenu() {
             this->getGraph();
             displayMainMenu();
         case 2:
-            //this->displayBacktrackingResult();
+            this->displayBacktrackingResult();
             displayMainMenu();
         case 3:
             this->displayFarewell();
@@ -42,6 +43,17 @@ const std::string & UserInterface::getGraph() {
     std::cin >> filename;
     this->controller = new GraphController(this->graphLoader->loadToyGraph(filename));
     std::cout << "Graph loaded successfully.\n";
+}
+
+void UserInterface::displayBacktrackingResult() {
+    if(this->controller == nullptr) this->getGraph();
+    std::pair<double, std::vector<uint16_t>> path = controller->minHamiltonianCicle();
+    std::cout << "For the given graph the minimum cost for a hamiltonian cycle is " << path.first << std::endl;
+    std::cout << "With the following path: ";
+    for(uint16_t idx:path.second ){
+        std::cout <<  idx <<", ";
+    }
+    std::cout << std::endl;
 }
 
 
@@ -67,7 +79,6 @@ void UserInterface::displayFarewell() {
     std::cout << std::setw(80) << "We specialize in Routing Algorithms for Ocean Shipping and Urban Deliveries." << std::endl;
     std::cout << std::setw(48) << "Have a safe journey ahead!" << RESET_COLOR << std::endl;
 }
-
 
 
 
