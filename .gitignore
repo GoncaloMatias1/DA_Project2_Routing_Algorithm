@@ -31,4 +31,4 @@
 *.out
 *.app
 
-data/Real_world_Graphs
+data/Real_world_Graphs/*
