@@ -1,0 +1,3 @@
+/home/admin1/Documents/A02S02/DA_PROJ2/cmake-build-debug/CMakeFiles/Route_x86.dir
+/home/admin1/Documents/A02S02/DA_PROJ2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/admin1/Documents/A02S02/DA_PROJ2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
