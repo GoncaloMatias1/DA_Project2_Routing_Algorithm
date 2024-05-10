@@ -1,5 +1,10 @@
 #include "GraphLoader.h"
 
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <limits>
+
 
 std::vector<std::vector<double>> GraphLoader::loadGraphFromCSV(const std::string& filePath) {
     std::vector<std::vector<double>> graph;
@@ -27,6 +32,8 @@ std::vector<std::vector<double>> GraphLoader::loadGraphFromCSV(const std::string
     }
 
     graph.resize(maxSize + 1, std::vector<double>(maxSize + 1, std::numeric_limits<double>::infinity()));
+
+
     file.clear();
     file.seekg(0);
 
@@ -53,6 +60,7 @@ std::vector<std::vector<double>> GraphLoader::loadGraphFromCSV(const std::string
 double GraphLoader::parseDouble(const std::string& str) {
     return std::stod(str);
 }
+
 
 std::vector<std::vector<double>> GraphLoader::loadToyGraph(const std::string &fileName) {
     std::vector<std::vector<double>> graph;
@@ -185,3 +193,4 @@ std::pair<std::vector<std::vector<double>>, std::unordered_map<int, std::pair<do
 
     return std::make_pair(graph, coords);
 }
+
