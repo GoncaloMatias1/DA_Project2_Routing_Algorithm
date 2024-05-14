@@ -3,6 +3,7 @@
 //
 
 #include "UserInterface.h"
+#include "TriangularApproximation.h"
 
 UserInterface::UserInterface() {
     this->graphLoader = new GraphLoader();
@@ -18,7 +19,8 @@ void UserInterface::displayMainMenu() {
     char choice;
     std::cout << "1. Load Graph\n";
     std::cout << "2. Execute TSP Backtracking\n";
-    std::cout << "3. Exit\n";
+    std::cout << "3. Execute Triangular Approximation\n";
+    std::cout << "4. Exit\n";
     std::cout << "Enter choice: ";
     std::cin >> choice;
     switch (choice - '0') {
@@ -31,12 +33,24 @@ void UserInterface::displayMainMenu() {
             displayMainMenu();
             return;
         case 3:
+            this->displayTriangularApproximationResult();
+            displayMainMenu();
+            return;
+        case 4:
             this->displayFarewell();
             return;
         default:
             std::cout << "Invalid key!\n";
             displayMainMenu();
     }
+}
+
+void UserInterface::displayTriangularApproximationResult() {
+    if(this->controller == nullptr) this->getGraph();
+    std::unordered_map<int, Coordinate> nodes = ... 
+    TriangularApproximation heuristic(controller->getGraph(), nodes);
+    double approxCost = heuristic.solve();
+    std::cout << "Approximate tour cost using triangular approximation: " << approxCost << std::endl;
 }
 
 const std::string & UserInterface::getGraph() {
