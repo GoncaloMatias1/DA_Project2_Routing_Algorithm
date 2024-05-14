@@ -47,7 +47,7 @@ void UserInterface::displayMainMenu() {
 
 void UserInterface::displayTriangularApproximationResult() {
     if(this->controller == nullptr) this->getGraph();
-    std::unordered_map<int, Coordinate> nodes = ... 
+    std::unordered_map<int, Coordinate> nodes = ...
     TriangularApproximation heuristic(controller->getGraph(), nodes);
     double approxCost = heuristic.solve();
     std::cout << "Approximate tour cost using triangular approximation: " << approxCost << std::endl;
