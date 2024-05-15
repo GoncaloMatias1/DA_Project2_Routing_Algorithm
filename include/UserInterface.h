@@ -28,6 +28,7 @@ public:
     void displayBacktrackingResult();
     void displayFarewell();
     void displayTriangularApproximationResult();
+    void displayRealWorldTSPResult();
 };
 
 #endif //ROUTE_X86_USERINTERFACE_H

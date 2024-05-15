@@ -47,6 +47,8 @@ public:
 
     std::pair<double, std::vector<uint16_t>> triangleInequalityApp();
 
+    std::pair<double, std::vector<uint16_t>> solveRealWorldTSP(uint16_t startNode);
+
 };
 
 

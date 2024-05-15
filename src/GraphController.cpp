@@ -184,7 +184,49 @@ void GraphController::preorderDFS(uint16_t node, const std::vector<std::vector<d
 }
 
 
+std::pair<double, std::vector<uint16_t>> GraphController::solveRealWorldTSP(uint16_t startNode) {
+    std::vector<uint16_t> path;
+    std::set<uint16_t> visited;
+    double totalDistance = 0;
 
+    if (graph.empty() || startNode >= graph.size()) {
+        std::cout << "Invalid start node or empty graph.\n";
+        return std::make_pair(-1, std::vector<uint16_t>());
+    }
+
+    std::priority_queue<std::pair<double, std::vector<uint16_t>>,
+            std::vector<std::pair<double, std::vector<uint16_t>>>,
+            std::greater<std::pair<double, std::vector<uint16_t>>>> pq;
+
+    pq.push({0, {startNode}});
+    while (!pq.empty()) {
+        auto [currentCost, currentPath] = pq.top();
+        pq.pop();
+        uint16_t currentNode = currentPath.back();
+
+        if (currentPath.size() == graph.size()) {
+            if (graph[currentNode][startNode] != std::numeric_limits<double>::infinity()) {
+                currentPath.push_back(startNode);
+                currentCost += graph[currentNode][startNode];
+                return {currentCost, currentPath};
+            }
+        }
+
+        for (uint16_t nextNode = 0; nextNode < graph.size(); ++nextNode) {
+            if (std::find(currentPath.begin(), currentPath.end(), nextNode) == currentPath.end()) {
+                double edgeWeight = graph[currentNode][nextNode];
+                if (edgeWeight != std::numeric_limits<double>::infinity()) {
+                    std::vector<uint16_t> newPath = currentPath;
+                    newPath.push_back(nextNode);
+                    pq.push({currentCost + edgeWeight, newPath});
+                }
+            }
+        }
+    }
+
+    std::cout << "No valid TSP path exists from the given starting node.\n";
+    return std::make_pair(-1, std::vector<uint16_t>());
+}
 
 
 

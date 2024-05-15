@@ -2,7 +2,6 @@
 // Created by admin1 on 10-05-2024.
 //
 #include "UserInterface.h"
-#include "TriangularApproximation.h"
 
 UserInterface::UserInterface() {
     this->graphLoader = new GraphLoader();
@@ -13,13 +12,37 @@ void UserInterface::bootload() {
     this->displayMainMenu();
 }
 
+void UserInterface::displayRealWorldTSPResult() {
+    if (this->controller == nullptr) {
+        this->displayLoadGraphMenu();
+    }
+
+    uint16_t startNode;
+    std::cout << "Enter starting node: ";
+    std::cin >> startNode;
+
+    auto result = this->controller->solveRealWorldTSP(startNode);
+
+    if (result.first == -1) {
+        std::cout << "No valid TSP path exists.\n";
+    } else {
+        std::cout << "The cost is " << result.first << std::endl;
+        std::cout << "With the following path: ";
+        for (uint16_t idx : result.second) {
+            std::cout << idx << ", ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 
 void UserInterface::displayMainMenu() {
     char choice;
     std::cout << "1. Load Graph\n";
     std::cout << "2. Execute TSP Backtracking\n";
     std::cout << "3. Execute Triangular Approximation\n";
-    std::cout << "4. Exit\n";
+    std::cout << "4. Execute Real-World TSP\n";
+    std::cout << "5. Exit\n";
     std::cout << "Enter choice: ";
     std::cin >> choice;
     switch (choice - '0') {
@@ -36,6 +59,10 @@ void UserInterface::displayMainMenu() {
             displayMainMenu();
             return;
         case 4:
+            this->displayRealWorldTSPResult();
+            displayMainMenu();
+            return;
+        case 5:
             this->displayFarewell();
             return;
         default:
