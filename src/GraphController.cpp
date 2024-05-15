@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <queue>
+#include <algorithm>
 #include "GraphController.h"
 
 
