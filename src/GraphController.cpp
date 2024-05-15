@@ -2,6 +2,8 @@
 // Created by admin1 on 10-05-2024.
 //
 
+#include <iostream>
+#include <queue>
 #include "GraphController.h"
 
 
@@ -9,10 +11,9 @@ GraphController::GraphController(std::vector<std::vector<double>> graph_) {
     this->graph = graph_;
 }
 
-GraphController::GraphController(std::vector<std::vector<double>> graph_,
-                                 std::unordered_map<int, Coordinate> coords) {
-    this->graph = graph_;
-    this->nodes = coords;
+GraphController::GraphController(std::pair<std::vector<std::vector<double>>, std::unordered_map<int, Coordinate>> data) {
+    this->graph = data.first;
+    this->nodes = data.second;
 }
 
 
@@ -32,6 +33,7 @@ std::pair<double, std::vector<uint16_t>> GraphController::minHamiltonianCicle() 
 }
 
 void GraphController::recursiveBacktracking(uint16_t curr_idx, uint16_t target_idx, double distance, const std::set<uint16_t>& visited, std::vector<uint16_t> path){
+
     std::set<uint16_t> curr_visited = visited;
     curr_visited.insert(curr_idx);
     path.push_back(curr_idx);
@@ -51,9 +53,7 @@ void GraphController::recursiveBacktracking(uint16_t curr_idx, uint16_t target_i
             }
             continue;
         }
-
         // this vertex is not the endpoint
-
         if(!this->Bound(adj_idx, updatedDistance, visited)) continue;
 
         recursiveBacktracking(adj_idx, target_idx, updatedDistance, curr_visited, path);
@@ -85,6 +85,95 @@ double GraphController::haversine(Coordinate coo1, Coordinate coo2) {
     double c = 2.0 * atan2(sqrt(aux), sqrt(1.0 - aux));
     double earthRadius = 6371000;
     return earthRadius * c;
+}
+
+std::pair<double, std::vector<uint16_t>> GraphController::triangleInequalityApp() {
+    std::vector<std::vector<double>> mst = this->getMSTPrim(0);
+    std::vector<uint16_t> preorder = this->preOrderWalk(mst);
+
+    double cost = 0;
+
+    for(uint16_t i = 1; i < preorder.size(); i++){
+        uint16_t lastIndex = preorder[i-1];
+        uint16_t currentIndex = preorder[i];
+        if(mst[lastIndex][currentIndex] != std::numeric_limits<double>::infinity()){
+            cost += this->graph[lastIndex][currentIndex];
+            continue;
+        }
+    }
+    if(this->graph[preorder[0]][preorder.back()] != std::numeric_limits<double>::infinity()){
+        cost += this->graph[preorder[0]][preorder.back()];
+    }else{
+        cost += this->haversine(this->nodes[preorder[0]], this->nodes[preorder.back()]);
+    }
+
+    return std::make_pair(cost, preorder);
+}
+std::vector<std::vector<double>> GraphController::getMSTPrim(int root) {
+    // Create an edge struct that will help to configure the priority queue
+    struct Edge {
+        double weight;
+        int vertexA;
+        int vertexB;
+
+        bool operator>(const Edge& other) const {
+            return weight > other.weight;
+        }
+    };
+
+    std::vector<std::vector<double>> result(this->graph.size(), std::vector<double>(this->graph.size(), std::numeric_limits<double>::infinity()));
+
+    std::vector<bool> visited(this->graph.size(), false);
+
+    std::priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> pq;
+
+    pq.push({0, root, root});
+
+    int max_edges = this->graph.size() - 1;
+    int edge_count = 0;
+
+    while (!pq.empty() && edge_count <= max_edges) {
+        Edge current = pq.top();
+        pq.pop();
+
+
+        result[current.vertexA][current.vertexB] = this->graph[current.vertexA][current.vertexB];
+        result[current.vertexB][current.vertexA] = this->graph[current.vertexA][current.vertexB];
+
+        // get current vertex
+        int u = current.vertexB;
+        if (visited[u]) continue;
+        visited[u] = true;
+
+        // for all adjacent, add it to the priority queue
+        for (int v = 0; v < this->graph.size(); v++) {
+            if (!visited[v] && this->graph[u][v] != std::numeric_limits<double>::infinity()) {
+                pq.push({this->graph[u][v], u ,v});
+            }
+        }
+
+        edge_count++;
+    }
+
+    return result;
+}
+
+std::vector<uint16_t> GraphController::preOrderWalk(std::vector<std::vector<double>> mst) {
+    std::vector<bool> visited(this->graph.size(), false);
+    std::vector<uint16_t> result;
+    preorderDFS(0, mst, visited, result);
+    return result;
+}
+
+void GraphController::preorderDFS(uint16_t node, const std::vector<std::vector<double>>& mst, std::vector<bool>& visited, std::vector<uint16_t>& result) {
+    visited[node] = true;
+    result.push_back(node);
+
+    for(uint16_t i = 0; i < this->graph.size(); i++){
+        if(!visited[i] && mst[node][i] != std::numeric_limits<double>::infinity()){
+            preorderDFS(i, mst, visited, result);
+        }
+    }
 }
 
 

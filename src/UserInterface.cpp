@@ -1,7 +1,6 @@
 //
 // Created by admin1 on 10-05-2024.
 //
-
 #include "UserInterface.h"
 #include "TriangularApproximation.h"
 
@@ -25,7 +24,7 @@ void UserInterface::displayMainMenu() {
     std::cin >> choice;
     switch (choice - '0') {
         case 1:
-            this->getGraph();
+            this->displayLoadGraphMenu();
             displayMainMenu();
             return;
         case 2:
@@ -45,24 +44,67 @@ void UserInterface::displayMainMenu() {
     }
 }
 
-void UserInterface::displayTriangularApproximationResult() {
-    if(this->controller == nullptr) this->getGraph();
-    std::unordered_map<int, Coordinate> nodes = ...
-    TriangularApproximation heuristic(controller->getGraph(), nodes);
-    double approxCost = heuristic.solve();
-    std::cout << "Approximate tour cost using triangular approximation: " << approxCost << std::endl;
+void UserInterface::displayLoadGraphMenu() {
+    char choice;
+    std::cout << "1. Load Toy Graph\n";
+    std::cout << "2. Load Real World Graph\n";
+    std::cout << "3. Load Extra Fully Connected Graphs\n";
+    std::cout << "4. Exit\n";
+    std::cout << "Enter choice: ";
+    std::cin >> choice;
+    switch (choice - '0') {
+        case 1:
+            this->getToyGraph();
+            displayMainMenu();
+            return;
+        case 2:
+            this->getRealGraph();
+            displayMainMenu();
+            return;
+        case 3:
+            this->getExtraFullGraph();
+            displayMainMenu();
+            return;
+        case 4:
+            this->displayMainMenu();
+            return;
+        default:
+            std::cout << "Invalid key!\n";
+            displayLoadGraphMenu();
+    }
 }
 
-const std::string & UserInterface::getGraph() {
+
+void UserInterface::displayTriangularApproximationResult() {
+    if(this->controller == nullptr) this->displayLoadGraphMenu();
+    std::cout << "The cost is "  << this->controller->triangleInequalityApp().first << std::endl;
+    std::cout << std::endl;
+}
+
+const std::string & UserInterface::getToyGraph() {
     std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
     this->controller = new GraphController(this->graphLoader->loadToyGraph(filename));
     std::cout << "Graph loaded successfully.\n";
 }
+const std::string & UserInterface::getRealGraph() {
+    std::string filename;
+    std::cout << "Enter filename: ";
+    std::cin >> filename;
+    this->controller = new GraphController(this->graphLoader->loadRealGraph(filename));
+    std::cout << "Graph loaded successfully.\n";
+}
+const std::string & UserInterface::getExtraFullGraph() {
+    std::string filename;
+    std::cout << "Enter filename: ";
+    std::cin >> filename;
+    this->controller = new GraphController(this->graphLoader->loadExtraFullGraph(filename));
+    std::cout << "Graph loaded successfully.\n";
+}
 
 void UserInterface::displayBacktrackingResult() {
-    if(this->controller == nullptr) this->getGraph();
+    if(this->controller == nullptr) this->displayLoadGraphMenu();
     std::pair<double, std::vector<uint16_t>> path = controller->minHamiltonianCicle();
     std::cout << "For the given graph the minimum cost for a hamiltonian cycle is " << path.first << std::endl;
     std::cout << "With the following path: ";
@@ -95,6 +137,7 @@ void UserInterface::displayFarewell() {
     std::cout << std::setw(80) << "We specialize in Routing Algorithms for Ocean Shipping and Urban Deliveries." << std::endl;
     std::cout << std::setw(48) << "Have a safe journey ahead!" << RESET_COLOR << std::endl;
 }
+
 
 
 

@@ -124,9 +124,9 @@ std::vector<std::vector<double>> GraphLoader::loadToyGraph(const std::string &fi
     return graph;
 }
 
-std::pair<std::vector<std::vector<double>>, std::unordered_map<int, std::pair<double, double>>> GraphLoader::loadLargeGraph(const std::string &fileName) {
+std::pair<std::vector<std::vector<double>>, std::unordered_map<int, Coordinate>> GraphLoader::loadRealGraph(const std::string &fileName) {
     std::vector<std::vector<double>> graph;
-    std::unordered_map<int, std::pair<double, double>> coords;
+    std::unordered_map<int, Coordinate> coords;
     uint16_t graphSize = 0;
 
     std::string path = "../data/Real_world_Graphs/" + fileName + "/";
@@ -159,7 +159,7 @@ std::pair<std::vector<std::vector<double>>, std::unordered_map<int, std::pair<do
             longitude = stod(cell);
             getline(lineStream, cell, ',');
             latitude = stod(cell);
-            coords[id] = std::make_pair(longitude, latitude);
+            coords[id] = {longitude, latitude};
             graphSize++;
         }catch (const std::invalid_argument& e){
             std::cout << "Error parsing csv file data [" << cell << "] : " << e.what() << std::endl;
@@ -192,5 +192,10 @@ std::pair<std::vector<std::vector<double>>, std::unordered_map<int, std::pair<do
     }
 
     return std::make_pair(graph, coords);
+}
+
+std::pair<std::vector<std::vector<double>>, std::unordered_map<int, Coordinate>> GraphLoader::loadExtraFullGraph(const std::string &fileName) {
+
+    return {};
 }
 

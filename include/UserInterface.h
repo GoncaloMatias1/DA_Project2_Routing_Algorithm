@@ -19,10 +19,15 @@ public:
     UserInterface();
     void bootload();
 
-    const std::string& getGraph();
+    const std::string& getToyGraph();
+    const std::string& getRealGraph();
+    const std::string& getExtraFullGraph();
+
     void displayMainMenu();
+    void displayLoadGraphMenu();
     void displayBacktrackingResult();
     void displayFarewell();
+    void displayTriangularApproximationResult();
 };
 
 #endif //ROUTE_X86_USERINTERFACE_H

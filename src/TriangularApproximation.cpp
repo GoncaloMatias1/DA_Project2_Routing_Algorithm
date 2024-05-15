@@ -1,6 +1,5 @@
+/*
 #include "TriangularApproximation.h"
-#include <cmath>
-#include <limits>
 
 TriangularApproximation::TriangularApproximation(const GraphLoader::Graph& graph, const std::unordered_map<int, Coordinate>& nodes)
         : graph(graph), nodes(nodes) {}
@@ -38,3 +37,4 @@ double TriangularApproximation::calculateDistance(int from, int to) {
     double earthRadius = 6371000;
     return earthRadius * c;
 }
+*/
