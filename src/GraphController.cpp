@@ -96,11 +96,18 @@ std::pair<double, std::vector<uint16_t>> GraphController::triangleInequalityApp(
     for(uint16_t i = 1; i < preorder.size(); i++){
         uint16_t lastIndex = preorder[i-1];
         uint16_t currentIndex = preorder[i];
+        // Exists edge
         if(mst[lastIndex][currentIndex] != std::numeric_limits<double>::infinity()){
             cost += this->graph[lastIndex][currentIndex];
             continue;
         }
+        // doesnt exist edge
+        else{
+            double distance = this->haversine(this->nodes[lastIndex], this->nodes[currentIndex]);
+            cost += distance;
+        }
     }
+
     if(this->graph[preorder[0]][preorder.back()] != std::numeric_limits<double>::infinity()){
         cost += this->graph[preorder[0]][preorder.back()];
     }else{

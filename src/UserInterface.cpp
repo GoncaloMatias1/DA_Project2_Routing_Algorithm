@@ -45,14 +45,20 @@ void UserInterface::displayMainMenu() {
 }
 
 void UserInterface::displayLoadGraphMenu() {
-    char choice;
+    std::string choice;
     std::cout << "1. Load Toy Graph\n";
     std::cout << "2. Load Real World Graph\n";
     std::cout << "3. Load Extra Fully Connected Graphs\n";
     std::cout << "4. Exit\n";
     std::cout << "Enter choice: ";
     std::cin >> choice;
-    switch (choice - '0') {
+    try{
+        std::stoi(choice);
+    }catch (const std::invalid_argument& e){
+        std::cout << "Invalid choice!\n";
+        displayLoadGraphMenu();
+    }
+    switch (std::stoi(choice)) {
         case 1:
             this->getToyGraph();
             displayMainMenu();
@@ -71,13 +77,19 @@ void UserInterface::displayLoadGraphMenu() {
         default:
             std::cout << "Invalid key!\n";
             displayLoadGraphMenu();
+            return;
     }
 }
 
 
 void UserInterface::displayTriangularApproximationResult() {
     if(this->controller == nullptr) this->displayLoadGraphMenu();
-    std::cout << "The cost is "  << this->controller->triangleInequalityApp().first << std::endl;
+    auto result = this->controller->triangleInequalityApp();
+    std::cout << "The cost is "  << result.first << std::endl;
+    std::cout << "With the following path: ";
+    for(uint16_t idx:result.second ){
+        std::cout <<  idx <<", ";
+    }
     std::cout << std::endl;
 }
 
