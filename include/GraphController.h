@@ -13,6 +13,13 @@ struct Coordinate {
     double longitude;
 };
 
+struct Cluster{
+    uint16_t clusterId;
+    std::set<uint16_t> nodes;
+    Coordinate center;
+    bool processed = false;
+};
+
 class GraphController{
 private:
     std::vector<std::vector<double>> graph;
@@ -30,6 +37,12 @@ private:
     std::vector<std::vector<double>> getMSTPrim(int root);
     void preorderDFS(uint16_t node, const std::vector<std::vector<double>>& mst, std::vector<bool>& visited, std::vector<uint16_t>& result);
     std::vector<uint16_t> preOrderWalk(std::vector<std::vector<double>> mst);
+
+    // AUX functions for clustering
+    std::vector<Cluster> getClusters();
+
+    Cluster findNearestCluster(std::vector<Cluster>& clusters, Cluster parent);
+    Cluster mergeCluster(const Cluster& clusterA, const Cluster& clusterB);
 
     // Calculations
     double convertToRadians(double coord);

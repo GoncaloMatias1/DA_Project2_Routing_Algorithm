@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <queue>
+#include <unordered_set>
 #include "GraphController.h"
 
 
@@ -88,6 +89,7 @@ double GraphController::haversine(Coordinate coo1, Coordinate coo2) {
 }
 
 std::pair<double, std::vector<uint16_t>> GraphController::triangleInequalityApp() {
+    //getClusters();
     std::vector<std::vector<double>> mst = this->getMSTPrim(0);
     std::vector<uint16_t> preorder = this->preOrderWalk(mst);
 
@@ -143,7 +145,6 @@ std::vector<std::vector<double>> GraphController::getMSTPrim(int root) {
         Edge current = pq.top();
         pq.pop();
 
-
         result[current.vertexA][current.vertexB] = this->graph[current.vertexA][current.vertexB];
         result[current.vertexB][current.vertexA] = this->graph[current.vertexA][current.vertexB];
 
@@ -181,6 +182,91 @@ void GraphController::preorderDFS(uint16_t node, const std::vector<std::vector<d
             preorderDFS(i, mst, visited, result);
         }
     }
+}
+
+std::vector<Cluster> GraphController::getClusters() {
+    // vector with n clusters that will decrease to n^(1/2)
+    std::vector<Cluster> clusters(this->graph.size());
+
+    // populate clusters (complexity -> size of the graph)
+    for(size_t idx = 0; idx < this->graph.size(); idx++){
+        // Creates a cluster for each point in the graph, this cluster has the id of the point
+        Cluster curr;
+        curr.clusterId = idx;
+        curr.nodes = {static_cast<uint16_t>(idx)};
+        curr.center = this->nodes[idx];
+        curr.processed = false;
+        clusters[idx] = curr;
+    }
+
+
+    uint16_t maxClusters = sqrt(this->graph.size());
+
+    while(clusters.size() > maxClusters){
+        // for each cluster find its nearest and merge
+        std::vector<Cluster> clusters_(clusters.size() / 2 + 1);
+        int processedNodes = 0;
+
+        // iterate over clusters
+        for(int idx = 0; idx < clusters.size(); idx++){
+            Cluster cluster = clusters[idx];
+            // find nearest to this cluster (excluding this) and absorve it
+            // don't process already merged clusters
+            if(cluster.processed) continue;
+            clusters[idx].processed = true;
+
+            Cluster nearestCluster = this->findNearestCluster(clusters, cluster);
+            // absorve parent cluster
+            Cluster biggerCluster = mergeCluster(nearestCluster, cluster);
+            clusters_[processedNodes] = biggerCluster;
+            processedNodes++;
+        }
+
+        clusters.swap(clusters_);
+    }
+
+    int count = 0;
+    for(Cluster cluster: clusters){
+        count += cluster.nodes.size();
+    }
+    int maxCount = this->graph.size();
+    return {};
+}
+
+Cluster GraphController::findNearestCluster(std::vector<Cluster>& clusters, Cluster parent) {
+    // this function should get the parent id and find its nearest cluster based on coordinates
+
+    double minDistance = std::numeric_limits<double>::infinity();
+    Cluster nearestCluster;
+    int clusterIdx = -1;
+
+    for(size_t i = 0; i < clusters.size(); i++){
+        if(clusters[i].clusterId == parent.clusterId || clusters[i].processed) continue;
+        // diff cluster
+        double curr_distance = this->haversine(parent.center, clusters[i].center);
+
+        if(curr_distance < minDistance){
+            minDistance = curr_distance;
+            nearestCluster = clusters[i];
+            clusterIdx = i;
+        }
+    }
+    clusters[clusterIdx].processed = true;
+    return nearestCluster;
+}
+
+Cluster GraphController::mergeCluster(const Cluster &clusterA, const Cluster &clusterB) {
+    Cluster parent = clusterA;
+    auto newSize = static_cast<double>(clusterA.nodes.size() + clusterB.nodes.size());
+
+    parent.center.latitude = (parent.center.latitude * parent.nodes.size() + clusterB.center.latitude) / newSize;
+    parent.center.longitude = (parent.center.longitude * parent.nodes.size() + clusterB.center.longitude) / newSize;
+
+    for (uint16_t node : clusterB.nodes) {
+        parent.nodes.insert(node);
+    }
+
+    return parent;
 }
 
 
