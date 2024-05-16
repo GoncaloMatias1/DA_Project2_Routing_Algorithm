@@ -8,6 +8,17 @@
 #include <limits>
 #include <cmath>
 
+// Create an edge struct that will help to configure the priority queue
+struct Edge {
+    double weight;
+    int vertexA;
+    int vertexB;
+
+    bool operator>(const Edge& other) const {
+        return weight > other.weight;
+    }
+};
+
 struct Coordinate {
     double latitude;
     double longitude;
@@ -17,7 +28,15 @@ struct Cluster{
     uint16_t clusterId;
     std::set<uint16_t> nodes;
     Coordinate center;
+
     bool processed = false;
+
+    uint16_t endpointA;
+    bool aConnected = false;
+    uint16_t endpointB;
+    bool bConnected = false;
+
+    ~Cluster(){}
 };
 
 class GraphController{
@@ -35,14 +54,25 @@ private:
 
     // AUX functions for 2-approximation
     std::vector<std::vector<double>> getMSTPrim(int root);
+
     void preorderDFS(uint16_t node, const std::vector<std::vector<double>>& mst, std::vector<bool>& visited, std::vector<uint16_t>& result);
     std::vector<uint16_t> preOrderWalk(std::vector<std::vector<double>> mst);
 
     // AUX functions for clustering
     std::vector<Cluster> getClusters();
+    std::unordered_map<uint16_t, std::set<uint16_t>> getMSTPrimFromCluster(Cluster cluster);
+
 
     Cluster findNearestCluster(std::vector<Cluster>& clusters, Cluster parent);
     Cluster mergeCluster(const Cluster& clusterA, const Cluster& clusterB);
+
+    void preorderDFSCluster(uint16_t node, const std::unordered_map<uint16_t, std::set<uint16_t>>& mst, std::set<uint16_t>& visited, std::vector<uint16_t>& result);
+
+    std::vector<uint16_t> preOrderWalkCluster(std::unordered_map<uint16_t, std::set<uint16_t>> mst);
+
+    double getCostFromClusters(std::vector<Cluster>& clusters);
+    double getcostFromInterClusterConnections(std::vector<Cluster>& clusters);
+
 
     // Calculations
     double convertToRadians(double coord);
@@ -59,6 +89,8 @@ public:
     std::pair<double, std::vector<uint16_t>> minHamiltonianCicle();
 
     std::pair<double, std::vector<uint16_t>> triangleInequalityApp();
+
+    std::pair<double, std::vector<uint16_t>> clusterHeuristic();
 
 };
 
