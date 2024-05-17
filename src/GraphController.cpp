@@ -9,56 +9,33 @@
 #include "GraphController.h"
 
 
-GraphController::GraphController(std::vector<std::vector<double>> graph_) {
+GraphController::GraphController(std::unordered_map<uint16_t, Vertex *> graph_) {
     this->graph = graph_;
 }
 
-GraphController::GraphController(std::pair<std::vector<std::vector<double>>, std::unordered_map<int, Coordinate>> data) {
-    this->graph = data.first;
-    this->nodes = data.second;
-}
-
-
-std::vector<double> GraphController::getAdj(uint16_t idx) const {
-    return this->graph[idx];
-}
-
-bool GraphController::setWeight(uint16_t source, uint16_t dest, double weight) {
-    if(source >= this->graph.size() || dest >= this->graph.size() || source < 0 || dest < 0) return false;
-    this->graph[source][dest] = weight;
-    return true;
-}
-
 std::pair<double, std::vector<uint16_t>> GraphController::minHamiltonianCicle()  {
-    this->recursiveBacktracking(0, 0);
+    this->recursiveBacktracking(this->graph[0]);
     return std::make_pair(this->min_distance, this->minPath);
 }
 
-void GraphController::recursiveBacktracking(uint16_t curr_idx, uint16_t target_idx, double distance, const std::set<uint16_t>& visited, std::vector<uint16_t> path){
-
+void GraphController::recursiveBacktracking(Vertex* curr_vertex, double distance, const std::set<uint16_t>& visited, std::vector<uint16_t> path){
     std::set<uint16_t> curr_visited = visited;
-    curr_visited.insert(curr_idx);
-    path.push_back(curr_idx);
+    curr_visited.insert(curr_vertex->getId());
 
-    for(uint32_t adj_idx = 0; adj_idx < this->graph.size(); adj_idx++){
-        // no edge or visited
-        if(this->graph[curr_idx][adj_idx] == std::numeric_limits<double>::infinity()) continue;
-        double updatedDistance = distance + this->graph[curr_idx][adj_idx];
+    path.push_back(curr_vertex->getId());
 
-        // we found the endpoint
-        if(adj_idx == target_idx){
-            if(this->allVerticesVisited(curr_visited)){
-                if(this->min_distance > updatedDistance){
-                    this->min_distance = updatedDistance;
-                    this->minPath = path;
-                }
+    for(Edge* adj: curr_vertex->getAdj()){
+        double updatedDistance = distance + adj->getWeight();
+        if(adj->getDestination()->getId() == 0 ){
+            if(this->allVerticesVisited(curr_visited) && this->min_distance > updatedDistance){
+                this->min_distance = updatedDistance;
+                this->minPath = path;
             }
             continue;
         }
-        // this vertex is not the endpoint
-        if(!this->Bound(adj_idx, updatedDistance, visited)) continue;
-
-        recursiveBacktracking(adj_idx, target_idx, updatedDistance, curr_visited, path);
+        // this vertex is not endpoint
+        if(!this->Bound(adj->getDestination()->getId(), updatedDistance, visited)) continue;
+        recursiveBacktracking(adj->getDestination(), updatedDistance, curr_visited, path);
     }
 }
 
@@ -89,116 +66,108 @@ double GraphController::haversine(Coordinate coo1, Coordinate coo2) {
     return earthRadius * c;
 }
 
-std::pair<double, std::vector<uint16_t>> GraphController::triangleInequalityApp() {
-    // remove this line is for testing other function
-    std::cout << "Cost: " << this->clusterHeuristic().first << std::endl;
-
+std::pair<double, std::vector<Vertex*>> GraphController::triangleInequalityApp() {
+    this->clusterHeuristic();
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    std::vector<std::vector<double>> mst = this->getMSTPrim(0);
-    std::vector<uint16_t> preorder = this->preOrderWalk(mst);
+   this->getMSTPrim(0, this->graph);
+    std::vector<Vertex*> preorder = this->preOrderWalk(this->graph);
 
-    double cost = 0;
-
-    for(uint16_t i = 1; i < preorder.size(); i++){
-        uint16_t lastIndex = preorder[i-1];
-        uint16_t currentIndex = preorder[i];
-        // Exists edge
-        if(mst[lastIndex][currentIndex] != std::numeric_limits<double>::infinity()){
-            cost += this->graph[lastIndex][currentIndex];
-            continue;
-        }
-        // doesnt exist edge
-        else{
-            double distance = this->haversine(this->nodes[lastIndex], this->nodes[currentIndex]);
-            cost += distance;
-        }
-    }
-
-    if(this->graph[preorder[0]][preorder.back()] != std::numeric_limits<double>::infinity()){
-        cost += this->graph[preorder[0]][preorder.back()];
-    }else{
-        cost += this->haversine(this->nodes[preorder[0]], this->nodes[preorder.back()]);
-    }
+    double cost = this->getCostFromWalk(preorder, this->graph);
     auto t2 = std::chrono::high_resolution_clock::now();
     std::cout << "Time to run triangular: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "miliseconds" << std::endl;
-    return std::make_pair(cost, preorder);
-}
+
+    return {cost , preorder};
+
+ }
 
 
 
-std::vector<std::vector<double>> GraphController::getMSTPrim(int root) {
-    std::vector<std::vector<double>> result(this->graph.size(), std::vector<double>(this->graph.size(), std::numeric_limits<double>::infinity()));
+void GraphController::getMSTPrim(int root, std::unordered_map<uint16_t, Vertex*>& graph_) {
+    if(graph_.empty()) return ;
+    std::vector<Edge*> result;
 
-    std::vector<bool> visited(this->graph.size(), false);
+    for(auto& vertex: graph_){
+        Vertex* curr_vertex = vertex.second;
+        curr_vertex->setVisited(false);
+        curr_vertex->setPath(nullptr);
+        curr_vertex->setDistance(std::numeric_limits<double>::infinity());
+    }
 
-    std::priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> pq;
+    Vertex* startVertex = this->graph[root];
+    startVertex->setDistance(0);
 
-    pq.push({0, root, root});
+    MutablePriorityQueue<Vertex> pq;
+    pq.insert(startVertex);
 
-    int max_edges = this->graph.size() - 1;
-    int edge_count = 0;
+    while(!pq.empty()){
+        auto v = pq.extractMin();
+        v->setVisited(true);
 
-    while (!pq.empty() && edge_count <= max_edges) {
-        Edge current = pq.top();
-        pq.pop();
+        double weight = 0;
 
-        result[current.vertexA][current.vertexB] = this->graph[current.vertexA][current.vertexB];
-        result[current.vertexB][current.vertexA] = this->graph[current.vertexA][current.vertexB];
-
-        // get current vertex
-        int u = current.vertexB;
-        if (visited[u]) continue;
-        visited[u] = true;
-
-        // for all adjacent, add it to the priority queue
-        for (int v = 0; v < this->graph.size(); v++) {
-            if (!visited[v] && this->graph[u][v] != std::numeric_limits<double>::infinity()) {
-                pq.push({this->graph[u][v], u ,v});
+        for(auto &e : v->getAdj()) {
+            Vertex* w = e->getDestination();
+            if (!w->isVisited()) {
+                auto oldDist = w->getDistance();
+                if(e->getWeight() < oldDist) {
+                    w->setDistance(e->getWeight());
+                    w->setPath(v);
+                    if (oldDist == std::numeric_limits<double>::infinity()) {
+                        pq.insert(w);
+                    }
+                    else {
+                        pq.decreaseKey(w);
+                    }
+                }
             }
         }
+    }
+    return;
+}
 
-        edge_count++;
+
+
+std::vector<Vertex*> GraphController::preOrderWalk(std::unordered_map<uint16_t, Vertex*>& graph_) {
+    std::vector<Vertex*> result;
+    if(graph_.find(0) != graph_.end()){
+        preorderDFS(graph_[0],  result, graph_);
+    }else{
+        preorderDFS(graph.begin()->second, result, graph_);
     }
     return result;
 }
 
-std::vector<uint16_t> GraphController::preOrderWalk(std::vector<std::vector<double>> mst) {
-    std::vector<bool> visited(this->graph.size(), false);
-    std::vector<uint16_t> result;
-    preorderDFS(0, mst, visited, result);
-    return result;
-}
-
-void GraphController::preorderDFS(uint16_t node, const std::vector<std::vector<double>>& mst, std::vector<bool>& visited, std::vector<uint16_t>& result) {
-    visited[node] = true;
+void GraphController::preorderDFS(Vertex* node, std::vector<Vertex*>& result, const std::unordered_map<uint16_t, Vertex*>& graph_) {
     result.push_back(node);
 
-    for(uint16_t i = 0; i < this->graph.size(); i++){
-        if(!visited[i] && mst[node][i] != std::numeric_limits<double>::infinity()){
-            preorderDFS(i, mst, visited, result);
+    for(auto vertexPair: graph_){
+        if(vertexPair.second->getPath() == node){
+            preorderDFS(vertexPair.second, result, graph_);
         }
     }
 }
+
 
 std::vector<Cluster> GraphController::getClusters() {
     // vector with n clusters that will decrease to n^(1/2)
     std::vector<Cluster> clusters(this->graph.size());
 
     // populate clusters (complexity -> size of the graph)
-    for(size_t idx = 0; idx < this->graph.size(); idx++){
-        // Creates a cluster for each point in the graph, this cluster has the id of the point
+    for(auto vPair: this->graph){
+        Vertex* vertex = vPair.second;
+
         Cluster curr;
-        curr.clusterId = idx;
-        curr.nodes = {static_cast<uint16_t>(idx)};
-        curr.center = this->nodes[idx];
+        curr.clusterId = vPair.first;
+        curr.nodes[vPair.first] = vertex;
+        curr.center = vertex->getCoordinates();
         curr.processed = false;
-        clusters[idx] = curr;
+        clusters[vPair.first] = curr;
     }
 
     uint16_t maxClusters = sqrt(this->graph.size());
 
-    while((clusters.size() / 2) > maxClusters){
+    while((clusters.size() / 2 + 5) > maxClusters){
         // for each cluster find its nearest and merge
         std::vector<Cluster> clusters_;
         int processedNodes = 0;
@@ -208,7 +177,6 @@ std::vector<Cluster> GraphController::getClusters() {
             Cluster cluster = clusters[idx];
             if(cluster.processed) continue;
             clusters[idx].processed = true;
-
             Cluster nearestCluster = this->findNearestCluster(clusters, cluster);
             // absorve parent cluster
             Cluster biggerCluster = mergeCluster(nearestCluster, cluster);
@@ -250,14 +218,15 @@ Cluster GraphController::findNearestCluster(std::vector<Cluster>& clusters, Clus
 
 Cluster GraphController::mergeCluster(const Cluster &clusterA, const Cluster &clusterB) {
     Cluster parent = clusterA;
+
     parent.processed = false;
     auto newSize = static_cast<double>(clusterA.nodes.size() + clusterB.nodes.size());
 
     parent.center.latitude = (parent.center.latitude * parent.nodes.size() + clusterB.center.latitude) / newSize;
     parent.center.longitude = (parent.center.longitude * parent.nodes.size() + clusterB.center.longitude) / newSize;
 
-    for (uint16_t node : clusterB.nodes) {
-        parent.nodes.insert(node);
+    for (auto nodePair : clusterB.nodes) {
+        parent.nodes[nodePair.first] = nodePair.second;
     }
 
     return parent;
@@ -268,147 +237,64 @@ std::pair<double, std::vector<uint16_t>> GraphController::clusterHeuristic() {
     auto t1 = std::chrono::high_resolution_clock::now();
     std::vector<Cluster> clusters = this->getClusters();
 
-    double cost = this->getCostFromClusters(clusters);
+    double cost = this->getMSTPrimFromCluster(clusters);
 
-    cost += this->getcostFromInterClusterConnections(clusters);
-
+    /*
+    this->colapseClusters(clusters);
+    std::vector<uint16_t> interClusterTour = solveInterCluster(clusters);
+    */
     auto t2 = std::chrono::high_resolution_clock::now();
     std::cout << "Time it took for cluster approach: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() << " miliseconds " << std::endl;
 
     return {cost, {}};
 }
 
-std::unordered_map<uint16_t, std::set<uint16_t>> GraphController::getMSTPrimFromCluster(Cluster cluster) {
-    std::set<uint16_t> visited;
-    std::priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> pq;
-
-    pq.push({0, *cluster.nodes.begin(), *cluster.nodes.begin()});
-
-    int max_edges = cluster.nodes.size() - 1;
-    int edge_count = 0;
-
-
-    // Map with (VertexId -> vector of adj)
-    std::unordered_map<uint16_t, std::set<uint16_t>> result;
-    while (!pq.empty() && edge_count <= max_edges) {
-        Edge current = pq.top();
-        pq.pop();
-
-        result[current.vertexA].insert(current.vertexB);
-        result[current.vertexB].insert(current.vertexA);
-
-        // get current vertex
-        int u = current.vertexB;
-        if (visited.find(u) != visited.end()) continue;
-        visited.insert(u);
-
-        // for all adjacent, add it to the priority queue
-        for(uint16_t node: cluster.nodes){
-            if(visited.find(node) == visited.end() && this->graph[u][node] != std::numeric_limits<double>::infinity()){
-                pq.push({this->graph[u][node], u, node});
-            }
-        }
-
-        edge_count++;
-    }
-    return result;
-}
-
-std::vector<uint16_t> GraphController::preOrderWalkCluster(std::unordered_map<uint16_t, std::set<uint16_t>> mst) {
-    std::set<uint16_t> visited;
-    std::vector<uint16_t> result;
-    if(mst.find(0) != mst.end()) preorderDFSCluster(0, mst, visited, result);
-    else preorderDFSCluster(mst.begin()->first, mst, visited, result);
-    return result;
-}
-void GraphController::preorderDFSCluster(uint16_t node, const std::unordered_map<uint16_t, std::set<uint16_t>> &mst, std::set<uint16_t> &visited, std::vector<uint16_t> &result) {
-    visited.insert(node);
-    result.push_back(node);
-
-    // for adjacent
-    for(uint16_t adj: mst.at(node)){
-        // each adjacent of this node
-        if(visited.find(adj) == visited.end()){
-            preorderDFSCluster(adj, mst, visited, result);
-        }
-    }
-}
-
-double GraphController::getCostFromClusters(std::vector<Cluster> &clusters) {
-    std::vector<uint16_t> resultWalk;
+double GraphController::getMSTPrimFromCluster(std::vector<Cluster>& clusters) {
     double cost = 0;
-
-    // process each cluster
     for(Cluster& cluster: clusters){
-        // for each cluster get its mst
-        auto clusterMst = this->getMSTPrimFromCluster(cluster);
-        if(clusterMst.size() != cluster.nodes.size()){
-            std::cerr << "Cluster was truncated when transforming to mst\n";
+        if(cluster.nodes.find(0) != cluster.nodes.end()){
+            // there is zero in this cluster
+            this->getMSTPrim(0, cluster.nodes);
         }
-        // do a preorder walk
-        auto walk = preOrderWalkCluster(clusterMst);
-        if(walk.size() != cluster.nodes.size()){
-            std::cerr << "Walk of cluster is wrong!\n";
+        else{
+            this->getMSTPrim(cluster.nodes.begin()->first, cluster.nodes);
         }
-
-        // for each walk calculate cost
-        for(uint16_t i = 1; i < walk.size(); i++){
-            uint16_t lastIndex = walk[i-1];
-            uint16_t currentIndex = walk[i];
-
-            // Exists edge
-
-            if(clusterMst[lastIndex].find(currentIndex) != clusterMst[lastIndex].end()){
-                cost += this->graph[lastIndex][currentIndex];
-                continue;
-            }
-            // doesnt exist edge
-            else{
-
-                double distance = this->haversine(this->nodes[lastIndex], this->nodes[currentIndex]);
-                cost += distance;
-            }
-        }
-        if(cluster.nodes.size() < 2){
-            cluster.endpointA = walk.back();
-            cluster.bConnected = true;
-            continue;
-        }
-        cluster.endpointA = walk.back();
-        cluster.endpointB = walk.front();
+        std::vector<Vertex*> walk = this->preOrderWalk(cluster.nodes);
+        cost += this->getCostFromWalk(walk, cluster.nodes);
     }
+
     return cost;
 }
 
-double GraphController::getcostFromInterClusterConnections(std::vector<Cluster> &clusters) {
+double GraphController::getCostFromWalk(std::vector<Vertex *> walk, std::unordered_map<uint16_t, Vertex *> &graph) {
     double cost = 0;
-    for(Cluster& rootCluster: clusters){
-        // for each iteration it should connect two clusters (from rootCluster - A to connectingCluster - B)
-        Cluster* nearestCluster;
-        double nearestEndpoint = std::numeric_limits<double>::infinity();
-        // for all clusters endpoints find its nearest
-        for(Cluster& connectingCluster: clusters){
-            if(connectingCluster.bConnected) continue;
-            double distance;
-            if(this->graph[connectingCluster.endpointB][rootCluster.endpointA] != std::numeric_limits<double>::infinity()){
-                distance = this->graph[connectingCluster.endpointB][rootCluster.endpointA];
-            }
-            else{
-                distance = this->haversine(this->nodes[connectingCluster.endpointB], this->nodes[rootCluster.endpointA]);
-            }
 
-            if(distance < nearestEndpoint){
-                nearestEndpoint = distance;
-                nearestCluster = &connectingCluster;
+
+    for(uint16_t i = 1; i < walk.size(); i++){
+        Vertex* last = walk[i-1];
+        Vertex* current = walk[i];
+
+        for(Edge* adj: last->getAdj()){
+            if(adj->getDestination() == current){
+                cost += adj->getWeight();
             }
         }
-
-        if(nearestEndpoint == std::numeric_limits<double>::infinity())continue;
-        rootCluster.aConnected = true;
-        nearestCluster->bConnected = true;
-        cost += nearestEndpoint;
     }
+
+    Vertex* endpoint = walk.back();
+    Vertex* endpointB = walk.front();
+    double dist = 0;
+    for(auto adj: endpoint->getAdj()){
+        if(adj->getDestination() == endpointB){
+            dist = adj->getWeight();
+        }
+    }
+    if(dist == 0){
+        dist = this->haversine(endpoint->getCoordinates(), endpointB->getCoordinates());
+        std::cout << "Graph is not fully connected!\n Results can be inacurate!\n";
+    }
+
+
+    cost += dist;
     return cost;
 }
-
-

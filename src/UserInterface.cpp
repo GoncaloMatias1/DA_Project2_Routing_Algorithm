@@ -87,8 +87,8 @@ void UserInterface::displayTriangularApproximationResult() {
     auto result = this->controller->triangleInequalityApp();
     std::cout << "The cost is "  << result.first << std::endl;
     std::cout << "With the following path: ";
-    for(uint16_t idx:result.second ){
-        std::cout <<  idx <<", ";
+    for(Vertex* vertex:result.second ){
+        std::cout <<  vertex->getId() <<", ";
     }
     std::cout << std::endl;
 }
