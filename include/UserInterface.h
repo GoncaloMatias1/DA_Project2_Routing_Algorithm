@@ -29,6 +29,7 @@ public:
     void displayFarewell();
     void displayTriangularApproximationResult();
     void displayClusterApproximationResult();
+    void displayTSPForDisconnectedGraphResult();
 };
 
 #endif //ROUTE_X86_USERINTERFACE_H
