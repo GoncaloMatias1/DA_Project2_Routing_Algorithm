@@ -7,6 +7,7 @@ Vertex::Vertex(uint16_t id) {
     this->vertexId = id;
     this->adj.clear();
     this->visited = false;
+    this->coordinates = {std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity()};
 }
 
 Vertex::Vertex(uint16_t id, std::vector<Edge *> adj_, Coordinate coo) {

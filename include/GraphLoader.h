@@ -16,10 +16,10 @@
 class GraphLoader {
 public:
 
-    std::unordered_map<uint16_t, Vertex*> loadToyGraph(const std::string& fileName);
+    std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>>> loadToyGraph(const std::string& fileName);
 
-    std::unordered_map<uint16_t, Vertex*> loadRealGraph(const std::string& fileName);
-    std::unordered_map<uint16_t, Vertex*> loadExtraFullGraph(const std::string& fileName);
+    std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>>> loadRealGraph(const std::string& fileName);
+    std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>>> loadExtraFullGraph(const std::string& fileName);
 
 private:
     double parseDouble(const std::string& str);

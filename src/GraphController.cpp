@@ -6,11 +6,15 @@
 #include <queue>
 #include <unordered_set>
 #include <chrono>
+#include <random>
+#include <utility>
+#include <algorithm>
 #include "GraphController.h"
 
 
-GraphController::GraphController(std::unordered_map<uint16_t, Vertex *> graph_) {
-    this->graph = graph_;
+GraphController::GraphController(std::unordered_map<uint16_t, Vertex *> graph_, std::vector<std::vector<double>> graphAdj_) {
+    this->graph = std::move(graph_);
+    this->graphAdj = std::move(graphAdj_);
 }
 
 std::pair<double, std::vector<uint16_t>> GraphController::minHamiltonianCicle()  {
@@ -55,6 +59,7 @@ double GraphController::convertToRadians(double coord) {
 }
 
 double GraphController::haversine(Coordinate coo1, Coordinate coo2) {
+    if(coo1.latitude == std::numeric_limits<double>::infinity() || coo2.latitude == std::numeric_limits<double>::infinity()) return std::numeric_limits<double>::infinity();
     Coordinate coo1_rad = {convertToRadians(coo1.latitude), convertToRadians(coo1.longitude)};
     Coordinate coo2_rad = {convertToRadians(coo2.latitude), convertToRadians(coo2.longitude)};
 
@@ -67,7 +72,6 @@ double GraphController::haversine(Coordinate coo1, Coordinate coo2) {
 }
 
 std::pair<double, std::vector<Vertex*>> GraphController::triangleInequalityApp() {
-    this->clusterHeuristic();
     auto t1 = std::chrono::high_resolution_clock::now();
 
    this->getMSTPrim(0, this->graph);
@@ -75,7 +79,7 @@ std::pair<double, std::vector<Vertex*>> GraphController::triangleInequalityApp()
 
     double cost = this->getCostFromWalk(preorder, this->graph);
     auto t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "Time to run triangular: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "miliseconds" << std::endl;
+    std::cout << "Time to run triangular: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "milliseconds" << std::endl;
 
     return {cost , preorder};
 
@@ -107,6 +111,8 @@ void GraphController::getMSTPrim(int root, std::unordered_map<uint16_t, Vertex*>
         double weight = 0;
 
         for(auto &e : v->getAdj()) {
+            if(graph_.find(e->getDestination()->getId()) == graph_.end()) continue;
+            if(graph_.find(e->getDestination()->getId()) == graph_.end()) continue;
             Vertex* w = e->getDestination();
             if (!w->isVisited()) {
                 auto oldDist = w->getDistance();
@@ -148,123 +154,45 @@ void GraphController::preorderDFS(Vertex* node, std::vector<Vertex*>& result, co
     }
 }
 
-
-std::vector<Cluster> GraphController::getClusters() {
-    // vector with n clusters that will decrease to n^(1/2)
-    std::vector<Cluster> clusters(this->graph.size());
-
-    // populate clusters (complexity -> size of the graph)
-    for(auto vPair: this->graph){
-        Vertex* vertex = vPair.second;
-
-        Cluster curr;
-        curr.clusterId = vPair.first;
-        curr.nodes[vPair.first] = vertex;
-        curr.center = vertex->getCoordinates();
-        curr.processed = false;
-        clusters[vPair.first] = curr;
-    }
-
-    uint16_t maxClusters = sqrt(this->graph.size());
-
-    while((clusters.size() / 2 + 5) > maxClusters){
-        // for each cluster find its nearest and merge
-        std::vector<Cluster> clusters_;
-        int processedNodes = 0;
-
-        // iterate over clusters
-        for(int idx = 0; idx < clusters.size(); idx++){
-            Cluster cluster = clusters[idx];
-            if(cluster.processed) continue;
-            clusters[idx].processed = true;
-            Cluster nearestCluster = this->findNearestCluster(clusters, cluster);
-            // absorve parent cluster
-            Cluster biggerCluster = mergeCluster(nearestCluster, cluster);
-            clusters_.push_back(biggerCluster);
-            processedNodes++;
-        }
-
-        // swap between clusters_ and clusters
-        for(uint16_t idx = 0; idx < clusters_.size(); idx++){
-            clusters[idx] = clusters_[idx];
-        }
-        clusters.resize(clusters_.size());
-    }
-
-    return clusters;
-}
-
-Cluster GraphController::findNearestCluster(std::vector<Cluster>& clusters, Cluster parent) {
-    // this function should get the parent id and find its nearest cluster based on coordinates
-
-    double minDistance = std::numeric_limits<double>::infinity();
-    Cluster nearestCluster;
-    int clusterIdx = -1;
-
-    for(size_t i = 0; i < clusters.size(); i++){
-        if(clusters[i].clusterId == parent.clusterId || clusters[i].processed) continue;
-        // diff cluster
-        double curr_distance = this->haversine(parent.center, clusters[i].center);
-
-        if(curr_distance < minDistance){
-            minDistance = curr_distance;
-            nearestCluster = clusters[i];
-            clusterIdx = i;
-        }
-    }
-    clusters[clusterIdx].processed = true;
-    return nearestCluster;
-}
-
-Cluster GraphController::mergeCluster(const Cluster &clusterA, const Cluster &clusterB) {
-    Cluster parent = clusterA;
-
-    parent.processed = false;
-    auto newSize = static_cast<double>(clusterA.nodes.size() + clusterB.nodes.size());
-
-    parent.center.latitude = (parent.center.latitude * parent.nodes.size() + clusterB.center.latitude) / newSize;
-    parent.center.longitude = (parent.center.longitude * parent.nodes.size() + clusterB.center.longitude) / newSize;
-
-    for (auto nodePair : clusterB.nodes) {
-        parent.nodes[nodePair.first] = nodePair.second;
-    }
-
-    return parent;
-}
-
 std::pair<double, std::vector<uint16_t>> GraphController::clusterHeuristic() {
-    // Get each cluster up to roughly (n ^ 1/2)
     auto t1 = std::chrono::high_resolution_clock::now();
-    std::vector<Cluster> clusters = this->getClusters();
+    if(this->graph.begin()->second->getCoordinates().latitude == std::numeric_limits<double>::infinity()) return this->fullNN();
 
-    double cost = this->getMSTPrimFromCluster(clusters);
+    // K-means clustering for geographic based clustering
+    std::vector<Cluster> clusters;
+    clusters = this->kmeansClustering();
 
-    /*
-    this->colapseClusters(clusters);
-    std::vector<uint16_t> interClusterTour = solveInterCluster(clusters);
-    */
-    auto t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "Time it took for cluster approach: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() << " miliseconds " << std::endl;
 
-    return {cost, {}};
-}
+    Cluster rootCluster;
 
-double GraphController::getMSTPrimFromCluster(std::vector<Cluster>& clusters) {
-    double cost = 0;
+    // for each cluster get a tour and a walk cost
+    double totalCost = 0;
+
+    std::vector<std::thread> threads;
+    for (Cluster& cluster : clusters) {
+        threads.emplace_back(&GraphController::tourNNFromCluster, this, std::ref(cluster));
+    }
+    // Join threads to ensure all complete before moving on
+    for (std::thread& t : threads) {
+        if (t.joinable()) {
+            t.join();
+        }
+    }
+    // generate cost from intra-cluster and find cluster with 0
     for(Cluster& cluster: clusters){
-        if(cluster.nodes.find(0) != cluster.nodes.end()){
-            // there is zero in this cluster
-            this->getMSTPrim(0, cluster.nodes);
-        }
-        else{
-            this->getMSTPrim(cluster.nodes.begin()->first, cluster.nodes);
-        }
-        std::vector<Vertex*> walk = this->preOrderWalk(cluster.nodes);
-        cost += this->getCostFromWalk(walk, cluster.nodes);
+        totalCost += cluster.tourCost;
+        if(cluster.rootCluster) rootCluster = cluster;
     }
 
-    return cost;
+    std::pair<double, std::vector<uint16_t>> finalTour = this->tourNNInterClusters(rootCluster, clusters);
+    finalTour.first += totalCost;
+
+
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "Time to run triangular: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "milliseconds" << std::endl;
+    return finalTour;
 }
+
 
 double GraphController::getCostFromWalk(std::vector<Vertex *> walk, std::unordered_map<uint16_t, Vertex *> &graph) {
     double cost = 0;
@@ -291,10 +219,210 @@ double GraphController::getCostFromWalk(std::vector<Vertex *> walk, std::unorder
     }
     if(dist == 0){
         dist = this->haversine(endpoint->getCoordinates(), endpointB->getCoordinates());
-        std::cout << "Graph is not fully connected!\n Results can be inacurate!\n";
+        if(dist == std::numeric_limits<double>::infinity()) dist = 0;
+        std::cout << "Graph is not fully connected!Results can be inaccurate!\n";
     }
 
 
     cost += dist;
     return cost;
+}
+
+double GraphController::calculateDataRange() {
+    Coordinate min = {std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity()};
+    Coordinate max = {std::numeric_limits<double>::lowest(), std::numeric_limits<double>::lowest()};
+
+    for(auto v: this->graph){
+        Coordinate coo = v.second->getCoordinates();
+        if(coo.latitude < min.latitude) {
+            min.latitude = coo.latitude;
+        }
+        if(coo.longitude < min.longitude){
+            min.longitude = coo.longitude;
+        }
+        if(coo.latitude > max.latitude){
+            max.latitude = coo.latitude;
+        }
+        if(coo.longitude > max.longitude){
+            max.longitude = coo.longitude;
+        }
+    }
+
+    return this->haversine(min, max);
+}
+
+std::vector<Cluster> GraphController::kmeansClustering() {
+    int k = sqrt(this->graph.size());
+    std::vector<Cluster> clusters(k);
+
+    int index = 0;
+    for (const auto& node : graph) {
+        if (index < k) {
+            clusters[index].center = node.second->getCoordinates();
+            clusters[index].clusterId = index;
+            index++;
+        } else {
+            break;
+        }
+    }
+
+    double tolerance = 0.01 * this->calculateDataRange();
+
+    bool changed = true;
+    // update clusters until no further change
+    while(changed){
+        for(auto& cluster: clusters){
+            cluster.nodes.clear();
+        }
+
+        for (const auto& node : graph) {
+            double minDist = std::numeric_limits<double>::infinity();
+            int bestCluster = 0;
+            for (int i = 0; i < k; ++i) {
+                double dist = this->haversine(node.second->getCoordinates(), clusters[i].center);
+                if (dist < minDist) {
+                    minDist = dist;
+                    bestCluster = i;
+                }
+            }
+            clusters[bestCluster].nodes.push_back(node.first);
+        }
+        changed = false;
+        for (int i = 0; i < k; ++i) {
+            double sumLat = 0;
+            double sumLon = 0;
+            for (uint16_t nodeId : clusters[i].nodes) {
+                sumLat += graph.at(nodeId)->getCoordinates().latitude;
+                sumLon += graph.at(nodeId)->getCoordinates().longitude;
+            }
+            Coordinate newCenter = {sumLat / clusters[i].nodes.size(), sumLon / clusters[i].nodes.size()};
+            double distance = this->haversine(newCenter, clusters[i].center);
+            if (distance > tolerance) {
+                changed = true;
+                clusters[i].center = newCenter;
+            }
+        }
+    }
+
+    return clusters;
+}
+
+void GraphController::tourNNFromCluster(Cluster &cluster) {
+    std::set<uint16_t> nodes;
+
+    cluster.tour.clear();
+    for(uint16_t node: cluster.nodes){
+        nodes.insert(node);
+        if(node == 0) cluster.rootCluster = true;
+    }
+
+    // do nearest neighbor (if is zero i want to start tour in 0)
+    uint16_t currNode = 0;
+    if(nodes.find(0) == nodes.end()) currNode = *nodes.begin();
+
+    while(!nodes.empty()){
+        double minDistance = std::numeric_limits<double>::infinity();
+        uint16_t minVertex;
+
+        for(uint16_t adjNode: nodes){
+            if(adjNode == currNode) continue;
+            double distance = this->graphAdj[currNode][adjNode];
+            // no edge between
+            if(distance == std::numeric_limits<double>::infinity()){
+                distance = this->haversine(this->graph[adjNode]->getCoordinates(), this->graph[currNode]->getCoordinates());
+            }
+            if(distance < minDistance){
+                minVertex = adjNode;
+                minDistance = distance;
+            }
+        }
+
+
+        nodes.erase(currNode);
+        cluster.tour.push_back(currNode);
+        currNode = minVertex;
+        if(minDistance == std::numeric_limits<double>::infinity()) break;
+        cluster.tourCost += minDistance;
+    }
+
+}
+
+// connect clusters endpoinds
+std::pair<double, std::vector<uint16_t>> GraphController::tourNNInterClusters(Cluster &root, std::vector<Cluster> &clusters) {
+    std::vector<uint16_t> interClusterTour;
+    double totalInterClusterCost = 0;
+
+    Cluster currCluster = root;
+    int connectedClusters = 0;
+
+    while(connectedClusters != clusters.size()){
+        currCluster.processed = true;
+        uint16_t endpointB = root.tour.front();
+        Cluster nearest;
+        double minDistance = std::numeric_limits<double>::infinity();
+
+        for(Cluster& childCluster: clusters){
+            if(childCluster.processed || childCluster.nodes.empty()) continue;
+            uint16_t endpointA = childCluster.tour.back();
+            double distance = this->graphAdj[endpointA][endpointB];
+            if(distance == std::numeric_limits<double>::infinity()){
+                distance = this->haversine(this->graph[endpointA]->getCoordinates(), this->graph[endpointB]->getCoordinates());
+            }
+
+            if(distance < minDistance){
+                nearest = childCluster;
+                minDistance = distance;
+            }
+        }
+
+        for(uint16_t node: currCluster.tour){
+            interClusterTour.push_back(node);
+        }
+        if(minDistance == std::numeric_limits<double>::infinity()) minDistance = 0;
+        totalInterClusterCost += minDistance;
+        currCluster = nearest;
+        connectedClusters++;
+    }
+
+    return {totalInterClusterCost, interClusterTour};
+
+}
+
+std::pair<double, std::vector<uint16_t>> GraphController::fullNN() {
+    std::set<uint16_t> nodes;
+    std::vector<uint16_t> tour;
+    double tourCost = 0;
+
+    for(auto v: this->graph){
+        nodes.insert(v.first);
+    }
+    // do nearest neighbor (if is zero i want to start tour in 0)
+    uint16_t currNode = 0;
+    while(!nodes.empty()){
+        double minDistance = std::numeric_limits<double>::infinity();
+        uint16_t minVertex;
+
+        for(uint16_t adjNode: nodes){
+            if(adjNode == currNode) continue;
+
+            double distance = this->graphAdj[currNode][adjNode];
+            if(distance < minDistance){
+                minVertex = adjNode;
+                minDistance = distance;
+            }
+        }
+
+        nodes.erase(currNode);
+        tour.push_back(currNode);
+        currNode = minVertex;
+        if(minDistance == std::numeric_limits<double>::infinity()) break;
+        tourCost += minDistance;
+    }
+
+    // compute trace back
+    if(this->graphAdj[tour.front()][tour.back()] != std::numeric_limits<double>::infinity()){
+        tourCost += this->graphAdj[tour.front()][tour.back()];
+    }
+
+    return {tourCost, tour};
 }

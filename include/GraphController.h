@@ -11,29 +11,24 @@
 #include <set>
 #include <limits>
 #include <cmath>
+#include <utility>
+#include <thread>
 
 struct Cluster{
-    std::unordered_map<uint16_t, Vertex*> nodes;
-    Coordinate center;
-
+    std::vector<uint16_t> nodes;
     uint16_t clusterId;
-    double clusterCost = 0;
+    Coordinate center;
     std::vector<uint16_t> tour;
-    uint16_t endpointA;
-    uint16_t endpointB;
-    bool aConnected = false;
-    bool bConnected = false;
+    double tourCost = 0;
 
+    bool rootCluster = false;
     bool processed = false;
-    ~Cluster(){}
 };
 
 class GraphController{
 private:
     std::unordered_map<uint16_t, Vertex*> graph;
-
-    //std::vector<std::vector<double>> graph;
-    //std::unordered_map<int, Coordinate> nodes; // Real-World graph nodes that hold the coordinates
+    std::vector<std::vector<double>> graphAdj;
 
     double min_distance = std::numeric_limits<double>::infinity();
     std::vector<uint16_t> minPath;
@@ -51,23 +46,20 @@ private:
     std::vector<Vertex*> preOrderWalk(std::unordered_map<uint16_t, Vertex*>& graph);
     double getCostFromWalk(std::vector<Vertex*> walk, std::unordered_map<uint16_t, Vertex*>& graph);
 
-   // AUX functions for clustering
-   std::vector<Cluster> getClusters();
-   Cluster findNearestCluster(std::vector<Cluster>& clusters, Cluster parent);
-   Cluster mergeCluster(const Cluster& clusterA, const Cluster& clusterB);
+    // AUX FUNCTIONS FOR nearest neighbor
+    std::vector<Cluster> kmeansClustering();
+    std::pair<double, std::vector<uint16_t>> fullNN();
 
-
-   double getMSTPrimFromCluster(std::vector<Cluster>& clusters);
+    void tourNNFromCluster(Cluster& cluster);
+    std::pair<double, std::vector<uint16_t>> tourNNInterClusters(Cluster& root, std::vector<Cluster>& clusters);
 
     // Calculations
     double convertToRadians(double coord);
     double haversine(Coordinate coo1, Coordinate coo2);
+    double calculateDataRange();
 
 public:
-    GraphController(std::unordered_map<uint16_t, Vertex*> graph);
-
-
-    // Node related logic (uint16 because the largest graph is 10k nodes long, with uint16 we get 65k range of numbers that covers the 10k)
+    GraphController(std::unordered_map<uint16_t, Vertex*> graph, std::vector<std::vector<double>> graphAdj_);
 
     std::pair<double, std::vector<uint16_t>> minHamiltonianCicle();
 
