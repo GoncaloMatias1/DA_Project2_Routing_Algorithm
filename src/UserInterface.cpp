@@ -2,7 +2,6 @@
 // Created by admin1 on 10-05-2024.
 //
 #include "UserInterface.h"
-#include "TriangularApproximation.h"
 
 UserInterface::UserInterface() {
     this->graphLoader = new GraphLoader();

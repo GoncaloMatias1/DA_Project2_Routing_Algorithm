@@ -18,7 +18,11 @@ GraphController::GraphController(std::unordered_map<uint16_t, Vertex *> graph_, 
 }
 
 std::pair<double, std::vector<uint16_t>> GraphController::minHamiltonianCicle()  {
+    auto t1 = std::chrono::high_resolution_clock::now();
     this->recursiveBacktracking(this->graph[0]);
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "Time to run backtracking: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "milliseconds" << std::endl;
+
     return std::make_pair(this->min_distance, this->minPath);
 }
 
@@ -156,7 +160,12 @@ void GraphController::preorderDFS(Vertex* node, std::vector<Vertex*>& result, co
 
 std::pair<double, std::vector<uint16_t>> GraphController::clusterHeuristic() {
     auto t1 = std::chrono::high_resolution_clock::now();
-    if(this->graph.begin()->second->getCoordinates().latitude == std::numeric_limits<double>::infinity()) return this->fullNN();
+    if(this->graph.begin()->second->getCoordinates().latitude == std::numeric_limits<double>::infinity()){
+        auto t2 = std::chrono::high_resolution_clock::now();
+        std::cout << "Time to run cluster: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "milliseconds" << std::endl;
+        return this->fullNN();
+    }
+
 
     // K-means clustering for geographic based clustering
     std::vector<Cluster> clusters;
@@ -189,7 +198,7 @@ std::pair<double, std::vector<uint16_t>> GraphController::clusterHeuristic() {
 
 
     auto t2 = std::chrono::high_resolution_clock::now();
-    std::cout << "Time to run triangular: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "milliseconds" << std::endl;
+    std::cout << "Time to run cluster: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "milliseconds" << std::endl;
     return finalTour;
 }
 
@@ -347,41 +356,47 @@ void GraphController::tourNNFromCluster(Cluster &cluster) {
 
 }
 
-// connect clusters endpoinds
+// connect clusters endpoints
 std::pair<double, std::vector<uint16_t>> GraphController::tourNNInterClusters(Cluster &root, std::vector<Cluster> &clusters) {
     std::vector<uint16_t> interClusterTour;
     double totalInterClusterCost = 0;
 
-    Cluster currCluster = root;
-    int connectedClusters = 0;
+    uint16_t currCluster;
+    for(uint16_t idx = 0; idx < clusters.size(); idx++){
+        if(clusters[idx].rootCluster){
+            currCluster = idx;
+            break;
+        }
+    }
+    int connectedCluster = 0;
 
-    while(connectedClusters != clusters.size()){
-        currCluster.processed = true;
-        uint16_t endpointB = root.tour.front();
-        Cluster nearest;
+    while(connectedCluster != clusters.size()){
+        clusters[currCluster].processed = true;
+        for(uint16_t node: clusters[currCluster].tour) interClusterTour.push_back(node);
+
+        uint16_t endpointB = clusters[currCluster].tour.front();
+        uint16_t nearestCluster;
         double minDistance = std::numeric_limits<double>::infinity();
 
-        for(Cluster& childCluster: clusters){
-            if(childCluster.processed || childCluster.nodes.empty()) continue;
-            uint16_t endpointA = childCluster.tour.back();
+        for(uint16_t childIdx = 0; childIdx < clusters.size(); childIdx++){
+            if(clusters[childIdx].processed || clusters[childIdx].nodes.empty()) continue;
+            uint16_t endpointA = clusters[childIdx].tour.back();
             double distance = this->graphAdj[endpointA][endpointB];
             if(distance == std::numeric_limits<double>::infinity()){
                 distance = this->haversine(this->graph[endpointA]->getCoordinates(), this->graph[endpointB]->getCoordinates());
             }
-
             if(distance < minDistance){
-                nearest = childCluster;
+                nearestCluster = childIdx;
                 minDistance = distance;
             }
         }
-
-        for(uint16_t node: currCluster.tour){
-            interClusterTour.push_back(node);
-        }
-        if(minDistance == std::numeric_limits<double>::infinity()) minDistance = 0;
+        if(minDistance == std::numeric_limits<double>::infinity()) break;
         totalInterClusterCost += minDistance;
-        currCluster = nearest;
-        connectedClusters++;
+        currCluster = nearestCluster;
+        connectedCluster++;
+    }
+    if(interClusterTour.size() != this->graph.size()){
+        std::cout << "The tour does not match the graph size, in this way the result is not reliable!\n";
     }
 
     return {totalInterClusterCost, interClusterTour};

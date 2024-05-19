@@ -15,8 +15,6 @@ add_executable(Route_x86
         src/GraphController.cpp
         include/UserInterface.h
         src/UserInterface.cpp
-        include/TriangularApproximation.h
-        src/TriangularApproximation.cpp
         include/Vertex.h
         include/Edge.h
         src/Edge.cpp
