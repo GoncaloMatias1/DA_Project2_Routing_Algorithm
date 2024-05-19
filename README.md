@@ -26,7 +26,7 @@ The project uses a combination of backtracking for small graphs and heuristic me
 
 ## Documentation
 
-The project's documentation is generated using Doxygen and is available under the `docs` directory. It includes detailed descriptions of all implemented functions and algorithms, along with their time complexity analysis.
+The project's documentation is generated using Doxygen and is available under the `doxygen` directory. It includes detailed descriptions of all implemented functions and algorithms, along with their time complexity analysis.
 
 ## Usage
 
@@ -60,8 +60,7 @@ After loading the graphs, users can run the following algorithms:
 - `Edge.h` / `Edge.cpp`: Defines the `Edge` class representing graph edges.
 - `GraphController.h` / `GraphController.cpp`: Manages graph operations and algorithms.
 - `GraphLoader.h` / `GraphLoader.cpp`: Handles loading and parsing of graph data from CSV files.
-- `MutablePriorityQueue.h`: Implements a mutable priority queue used in Dijkstra's algorithm.
-- `TSPBacktracking.h`: Contains the backtracking algorithm for solving TSP.
+- `MutablePriorityQueue.h`: Implements a mutable priority queue used in prim's algorithm.
 - `UserInterface.h` / `UserInterface.cpp`: Provides the user interface for the application.
 - `Vertex.h` / `Vertex.cpp`: Defines the `Vertex` class representing graph vertices.
 
