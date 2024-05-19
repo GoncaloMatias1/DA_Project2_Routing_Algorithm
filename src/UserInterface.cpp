@@ -1,6 +1,3 @@
-//
-// Created by admin1 on 10-05-2024.
-//
 #include "UserInterface.h"
 
 UserInterface::UserInterface() {
@@ -13,94 +10,94 @@ void UserInterface::bootload() {
 }
 
 void UserInterface::displayMainMenu() {
-    char choice;
-    std::cout << "1. Load Graph\n";
-    std::cout << "2. Execute TSP Backtracking\n";
-    std::cout << "3. Execute Triangular Approximation\n";
-    std::cout << "4. Execute Cluster Approximation\n";
-    std::cout << "5. Execute TSP for Disconnected Graph\n";
-    std::cout << "6. Exit\n";
-    std::cout << "Enter choice: ";
-    std::cin >> choice;
-    switch (choice - '0') {
-        case 1:
-            this->displayLoadGraphMenu();
-            displayMainMenu();
-            return;
-        case 2:
-            this->displayBacktrackingResult();
-            displayMainMenu();
-            return;
-        case 3:
-            this->displayTriangularApproximationResult();
-            displayMainMenu();
-            return;
-        case 4:
-            this->displayClusterApproximationResult();
-            displayMainMenu();
-            return;
-        case 5:
-            this->displayTSPForDisconnectedGraphResult();
-            displayMainMenu();
-            return;
-        case 6:
-            this->displayFarewell();
-            return;
-        default:
+    std::string choice;
+    while (true) {
+        std::cout << "1. Load Graph\n";
+        std::cout << "2. Execute TSP Backtracking\n";
+        std::cout << "3. Execute Triangular Approximation\n";
+        std::cout << "4. Execute Cluster Approximation\n";
+        std::cout << "5. Execute TSP for Disconnected Graph\n";
+        std::cout << "6. Exit\n";
+        std::cout << "Enter choice: ";
+        std::cin >> choice;
+
+        if (choice.length() != 1 || choice[0] < '1' || choice[0] > '6') {
             std::cout << "Invalid key!\n";
-            displayMainMenu();
+            continue;
+        }
+
+        switch (choice[0] - '0') {
+            case 1:
+                this->displayLoadGraphMenu();
+                break;
+            case 2:
+                this->displayBacktrackingResult();
+                break;
+            case 3:
+                this->displayTriangularApproximationResult();
+                break;
+            case 4:
+                this->displayClusterApproximationResult();
+                break;
+            case 5:
+                this->displayTSPForDisconnectedGraphResult();
+                break;
+            case 6:
+                this->displayFarewell();
+                return;
+            default:
+                std::cout << "Invalid key!\n";
+        }
     }
 }
 
 void UserInterface::displayLoadGraphMenu() {
     std::string choice;
-    std::cout << "1. Load Toy Graph\n";
-    std::cout << "2. Load Real World Graph\n";
-    std::cout << "3. Load Extra Fully Connected Graphs\n";
-    std::cout << "4. Exit\n";
-    std::cout << "Enter choice: ";
-    std::cin >> choice;
-    try {
-        std::stoi(choice);
-    } catch (const std::invalid_argument& e) {
-        std::cout << "Invalid choice!\n";
-        displayLoadGraphMenu();
-    }
-    switch (std::stoi(choice)) {
-        case 1:
-            this->getToyGraph();
-            displayMainMenu();
-            return;
-        case 2:
-            this->getRealGraph();
-            displayMainMenu();
-            return;
-        case 3:
-            this->getExtraFullGraph();
-            displayMainMenu();
-            return;
-        case 4:
-            this->displayMainMenu();
-            return;
-        default:
+    while (true) {
+        std::cout << "1. Load Toy Graph\n";
+        std::cout << "2. Load Real World Graph\n";
+        std::cout << "3. Load Extra Fully Connected Graphs\n";
+        std::cout << "4. Back to Main Menu\n";
+        std::cout << "Enter choice: ";
+        std::cin >> choice;
+
+        if (choice.length() != 1 || choice[0] < '1' || choice[0] > '4') {
             std::cout << "Invalid key!\n";
-            displayLoadGraphMenu();
-            return;
+            continue;
+        }
+
+        switch (choice[0] - '0') {
+            case 1:
+                this->getToyGraph();
+                break;
+            case 2:
+                this->getRealGraph();
+                break;
+            case 3:
+                this->getExtraFullGraph();
+                break;
+            case 4:
+                return;
+            default:
+                std::cout << "Invalid key!\n";
+        }
     }
 }
 
 void UserInterface::displayTriangularApproximationResult() {
-    if (this->controller == nullptr) this->displayLoadGraphMenu();
+    if (this->controller == nullptr) {
+        std::cout << "No graph loaded. Please load a graph first.\n";
+        this->displayLoadGraphMenu();
+    }
     auto result = this->controller->triangleInequalityApp();
     std::cout << "The cost is " << result.first << std::endl;
     savePathToFile("triangular", result.second, result.first);
 }
 
 const std::string& UserInterface::getToyGraph() {
-    std::string filename;
+    static std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
-    this->filename_ = filename;
     auto pair = this->graphLoader->loadToyGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
@@ -108,10 +105,9 @@ const std::string& UserInterface::getToyGraph() {
 }
 
 const std::string& UserInterface::getRealGraph() {
-    std::string filename;
+    static std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
-    this->filename_ = filename;
     auto pair = this->graphLoader->loadRealGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
@@ -119,10 +115,9 @@ const std::string& UserInterface::getRealGraph() {
 }
 
 const std::string& UserInterface::getExtraFullGraph() {
-    std::string filename;
+    static std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
-    this->filename_ = filename;
     auto pair = this->graphLoader->loadExtraFullGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
@@ -130,21 +125,30 @@ const std::string& UserInterface::getExtraFullGraph() {
 }
 
 void UserInterface::displayBacktrackingResult() {
-    if (this->controller == nullptr) this->displayLoadGraphMenu();
+    if (this->controller == nullptr) {
+        std::cout << "No graph loaded. Please load a graph first.\n";
+        this->displayLoadGraphMenu();
+    }
     std::pair<double, std::vector<uint16_t>> path = controller->minHamiltonianCicle();
     std::cout << "For the given graph the minimum cost for a hamiltonian cycle is " << path.first << std::endl;
     savePathToFile("backtracking", path.second, path.first);
 }
 
 void UserInterface::displayClusterApproximationResult() {
-    if (this->controller == nullptr) this->displayLoadGraphMenu();
+    if (this->controller == nullptr) {
+        std::cout << "No graph loaded. Please load a graph first.\n";
+        this->displayLoadGraphMenu();
+    }
     std::pair<double, std::vector<uint16_t>> path = controller->clusterHeuristic();
     std::cout << "For the given graph the cluster approximation is " << path.first << std::endl;
     savePathToFile("cluster", path.second, path.first);
 }
 
 void UserInterface::displayTSPForDisconnectedGraphResult() {
-    if (this->controller == nullptr) this->displayLoadGraphMenu();
+    if (this->controller == nullptr) {
+        std::cout << "No graph loaded. Please load a graph first.\n";
+        this->displayLoadGraphMenu();
+    }
     uint16_t startNode;
     std::cout << "Enter starting node: ";
     std::cin >> startNode;
@@ -178,18 +182,16 @@ void UserInterface::displayFarewell() {
 }
 
 void UserInterface::savePathToFile(std::string functionName, std::vector<uint16_t> path, double cost) {
-
     std::string dirName = "../output";
 
     if (!fs::exists(dirName)) {
         std::cout << "Creating output directory...\n";
-        if(!fs::create_directory(dirName)){
-            std::cout << "Couldn't create directory, please manually create 'output' directory"<<std::endl;
+        if (!fs::create_directory(dirName)) {
+            std::cout << "Couldn't create directory, please manually create 'output' directory" << std::endl;
         }
     }
 
-    std::ofstream file("../output/" + functionName + "_" + this->filename_  + ".txt");
-
+    std::ofstream file("../output/" + functionName + "_" + this->filename_ + ".txt");
 
     if (file.is_open()) {
         file << "Function Name: " << functionName << std::endl;
