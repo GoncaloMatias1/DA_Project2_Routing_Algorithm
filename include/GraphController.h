@@ -183,7 +183,7 @@ public:
      * @brief Solves the TSP using the triangle inequality approximation.
      * @return Pair of tour cost and tour path.
      */
-    std::pair<double, std::vector<Vertex*>> triangleInequalityApp();
+    std::pair<double, std::vector<uint16_t>> triangleInequalityApp();
 
     /**
      * @brief Solves the TSP using a cluster heuristic.

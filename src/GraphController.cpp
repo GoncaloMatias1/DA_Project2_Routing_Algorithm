@@ -75,7 +75,7 @@ double GraphController::haversine(Coordinate coo1, Coordinate coo2) {
     return earthRadius * c;
 }
 
-std::pair<double, std::vector<Vertex*>> GraphController::triangleInequalityApp() {
+std::pair<double, std::vector<uint16_t>> GraphController::triangleInequalityApp() {
     auto t1 = std::chrono::high_resolution_clock::now();
 
     this->getMSTPrim(0, this->graph);
@@ -84,8 +84,10 @@ std::pair<double, std::vector<Vertex*>> GraphController::triangleInequalityApp()
     double cost = this->getCostFromWalk(preorder, this->graph);
     auto t2 = std::chrono::high_resolution_clock::now();
     std::cout << "Time to run triangular: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "milliseconds" << std::endl;
+    std::vector<uint16_t> result;
+    for(Vertex* v: preorder) result.push_back(v->getId());
 
-    return {cost , preorder};
+    return {cost , result};
 
 }
 

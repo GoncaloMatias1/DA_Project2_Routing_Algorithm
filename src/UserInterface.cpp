@@ -93,17 +93,14 @@ void UserInterface::displayTriangularApproximationResult() {
     if (this->controller == nullptr) this->displayLoadGraphMenu();
     auto result = this->controller->triangleInequalityApp();
     std::cout << "The cost is " << result.first << std::endl;
-    std::cout << "With the following path: ";
-    for (Vertex* vertex : result.second) {
-        std::cout << vertex->getId() << ", ";
-    }
-    std::cout << std::endl;
+    savePathToFile("triangular", result.second, result.first);
 }
 
 const std::string& UserInterface::getToyGraph() {
     std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
+    this->filename_ = filename;
     auto pair = this->graphLoader->loadToyGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
@@ -114,6 +111,7 @@ const std::string& UserInterface::getRealGraph() {
     std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
+    this->filename_ = filename;
     auto pair = this->graphLoader->loadRealGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
@@ -124,6 +122,7 @@ const std::string& UserInterface::getExtraFullGraph() {
     std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
+    this->filename_ = filename;
     auto pair = this->graphLoader->loadExtraFullGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
@@ -134,22 +133,14 @@ void UserInterface::displayBacktrackingResult() {
     if (this->controller == nullptr) this->displayLoadGraphMenu();
     std::pair<double, std::vector<uint16_t>> path = controller->minHamiltonianCicle();
     std::cout << "For the given graph the minimum cost for a hamiltonian cycle is " << path.first << std::endl;
-    std::cout << "With the following path: ";
-    for (uint16_t idx : path.second) {
-        std::cout << idx << ", ";
-    }
-    std::cout << std::endl;
+    savePathToFile("backtracking", path.second, path.first);
 }
 
 void UserInterface::displayClusterApproximationResult() {
     if (this->controller == nullptr) this->displayLoadGraphMenu();
     std::pair<double, std::vector<uint16_t>> path = controller->clusterHeuristic();
     std::cout << "For the given graph the cluster approximation is " << path.first << std::endl;
-    std::cout << "With the following path: ";
-    for (uint16_t idx : path.second) {
-        std::cout << idx << ", ";
-    }
-    std::cout << std::endl;
+    savePathToFile("cluster", path.second, path.first);
 }
 
 void UserInterface::displayTSPForDisconnectedGraphResult() {
@@ -162,11 +153,7 @@ void UserInterface::displayTSPForDisconnectedGraphResult() {
         std::cout << "No path exists that visits all nodes and returns to the origin.\n";
     } else {
         std::cout << "The cost is " << result.first << std::endl;
-        std::cout << "With the following path: ";
-        for (uint16_t node : result.second) {
-            std::cout << node << ", ";
-        }
-        std::cout << std::endl;
+        savePathToFile("disconnected", result.second, result.first);
     }
 }
 
@@ -188,4 +175,25 @@ void UserInterface::displayFarewell() {
     std::cout << std::setw(40) << "Thank you for using " << GREEN_COLOR << "ROUTE_X86" << RESET_COLOR << BOLD << "!" << std::endl;
     std::cout << std::setw(80) << "We specialize in Routing Algorithms for Ocean Shipping and Urban Deliveries." << std::endl;
     std::cout << std::setw(48) << "Have a safe journey ahead!" << RESET_COLOR << std::endl;
+}
+
+void UserInterface::savePathToFile(std::string functionName, std::vector<uint16_t> path, double cost) {
+
+    std::ofstream file("../output/" + functionName + "_" + this->filename_  + ".txt");
+
+    if (file.is_open()) {
+        file << "Function Name: " << functionName << std::endl;
+        file << "Path: ";
+        for (uint16_t node : path) {
+            file << node << " ";
+        }
+        file << std::endl;
+        file << "Cost: " << cost << std::endl;
+        file << "---------------------" << std::endl;
+
+        file.close();
+        std::cout << "Path data saved to file successfully." << std::endl;
+    } else {
+        std::cerr << "Error: Unable to open file for writing." << std::endl;
+    }
 }

@@ -17,6 +17,7 @@
  */
 class UserInterface {
 private:
+    std::string filename_; /**< The graph file name. */
     GraphController* controller; /**< The graph controller used for executing algorithms. */
     GraphLoader* graphLoader; /**< The graph loader used for loading graphs from files. */
 
@@ -83,6 +84,11 @@ public:
      * @brief Displays the result of the TSP algorithm for disconnected graphs.
      */
     void displayTSPForDisconnectedGraphResult();
+
+    /**
+     * @brief Saves the path to a file.
+     */
+    void savePathToFile(std::string functionName, std::vector<uint16_t> path, double cost);
 };
 
 #endif //ROUTE_X86_USERINTERFACE_H
