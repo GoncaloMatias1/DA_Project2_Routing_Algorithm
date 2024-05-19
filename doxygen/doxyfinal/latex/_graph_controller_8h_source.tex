@@ -1,0 +1,92 @@
+\doxysection{Graph\+Controller.\+h}
+\hypertarget{_graph_controller_8h_source}{}\label{_graph_controller_8h_source}\index{/Users/goncalomatias/Documents/GitHub/DA-\/Project\_2/include/GraphController.h@{/Users/goncalomatias/Documents/GitHub/DA-\/Project\_2/include/GraphController.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ GRAPHCONTROLLER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ GRAPHCONTROLLER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}Vertex.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}Edge.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}MutablePriorityQueue.h"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <cinttypes>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <queue>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_cluster}{Cluster}}\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ std::vector<uint16\_t>\ \mbox{\hyperlink{struct_cluster_a425a53ebf6357806bc3635bbeb4c48ab}{nodes}};\ }
+\DoxyCodeLine{00024\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{struct_cluster_afb4940d399b9825c50015574cb5e1665}{clusterId}};\ }
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{struct_coordinate}{Coordinate}}\ \mbox{\hyperlink{struct_cluster_aa763e5a664bd2e1b9f7c10dacb2a2651}{center}};\ }
+\DoxyCodeLine{00026\ \ \ \ \ std::vector<uint16\_t>\ \mbox{\hyperlink{struct_cluster_a0559a5a7d5b7097caaf0434c743caacb}{tour}};\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{struct_cluster_acc4de7b4b0ece56cc6b2931e9d4249b7}{tourCost}}\ =\ 0;\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_cluster_af2bcd052132249bb0b35f77ea1432150}{rootCluster}}\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{struct_cluster_a92ec9ea15bcbb3e091fbafe248023763}{processed}}\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00031\ \};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_graph_controller}{GraphController}}\ \{}
+\DoxyCodeLine{00038\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00039\ \ \ \ \ std::unordered\_map<uint16\_t,\ Vertex*>\ \mbox{\hyperlink{class_graph_controller_ad90af81f1dc034c2b0f4c1efe0901622}{graph}};\ }
+\DoxyCodeLine{00040\ \ \ \ \ std::vector<std::vector<double>>\ \mbox{\hyperlink{class_graph_controller_a0ab6882f1ec61580fe4aff06036e953c}{graphAdj}};\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_graph_controller_a45e289ef1dd6283dbd44a7c9768a3e24}{min\_distance}}\ =\ std::numeric\_limits<double>::infinity();\ }
+\DoxyCodeLine{00043\ \ \ \ \ std::vector<uint16\_t>\ \mbox{\hyperlink{class_graph_controller_a0f7c60577af43b825530976aa1e0c3b1}{minPath}};\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//\ AUX\ functions\ for\ backtrack}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_controller_a16031faa3b6156eb3022f74f281bc24e}{recursiveBacktracking}}(\mbox{\hyperlink{class_vertex}{Vertex}}*\ curr\_vertex,\ \textcolor{keywordtype}{double}\ distance\ =\ 0,\ \textcolor{keyword}{const}\ std::set<uint16\_t>\&\ visited\ =\ \{\},\ std::vector<uint16\_t>\ path\ =\ \{\});}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_graph_controller_a68078386a0a60529f755ad69919e884e}{Bound}}(uint16\_t\ curr\_idx,\ \textcolor{keywordtype}{double}\ pathSum,\ \textcolor{keyword}{const}\ std::set<uint16\_t>\&\ visited)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_graph_controller_af807d6dde55f72f243227eca81f756b4}{allVerticesVisited}}(\textcolor{keyword}{const}\ std::set<uint16\_t>\&\ visited)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{comment}{//\ AUX\ functions\ for\ 2-\/approximation}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_controller_a9ab09194de4a52de531be3955f35f4fa}{getMSTPrim}}(\textcolor{keywordtype}{int}\ root,\ std::unordered\_map<uint16\_t,\ Vertex*>\&\ graph\_);}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_controller_ade3e31ded131d0511e195798780a8bde}{preorderDFS}}(\mbox{\hyperlink{class_vertex}{Vertex}}*\ node,\ std::vector<Vertex*>\&\ result,\ \textcolor{keyword}{const}\ std::unordered\_map<uint16\_t,\ Vertex*>\&\ graph\_);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00094\ \ \ \ \ std::vector<Vertex*>\ \mbox{\hyperlink{class_graph_controller_a5cf5382f6d722f00b0b06cd0441c2d90}{preOrderWalk}}(std::unordered\_map<uint16\_t,\ Vertex*>\&\ graph\_);}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_graph_controller_a5e330f574f1ba77a55b563fd0046d029}{getCostFromWalk}}(std::vector<Vertex*>\ walk,\ std::unordered\_map<uint16\_t,\ Vertex*>\&\ \mbox{\hyperlink{class_graph_controller_ad90af81f1dc034c2b0f4c1efe0901622}{graph}});}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//\ AUX\ functions\ for\ nearest\ neighbor}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00110\ \ \ \ \ std::vector<Cluster>\ \mbox{\hyperlink{class_graph_controller_a14c56b2629e92c7b843d0d5c54923796}{kmeansClustering}}();}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00116\ \ \ \ \ std::pair<double,\ std::vector<uint16\_t>>\ \mbox{\hyperlink{class_graph_controller_a2f7ee3d477ed41f6d518c084996b5052}{fullNN}}();}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_controller_abe5d47d04f2199df0ecce8474a1fe5b4}{tourNNFromCluster}}(\mbox{\hyperlink{struct_cluster}{Cluster}}\&\ cluster);}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00130\ \ \ \ \ std::pair<double,\ std::vector<uint16\_t>>\ \mbox{\hyperlink{class_graph_controller_a92a55b18c7166a17cce06173cf881ac9}{tourNNInterClusters}}(\mbox{\hyperlink{struct_cluster}{Cluster}}\&\ root,\ std::vector<Cluster>\&\ clusters);}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{comment}{//\ Calculations}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_graph_controller_a6b199cb267f9d01aa846f218a534b026}{convertToRadians}}(\textcolor{keywordtype}{double}\ coord);}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_graph_controller_a56f29c705f1ae2454885f94668b06b28}{haversine}}(\mbox{\hyperlink{struct_coordinate}{Coordinate}}\ coo1,\ \mbox{\hyperlink{struct_coordinate}{Coordinate}}\ coo2);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_graph_controller_a9c3d1b4e0778256e18f092df72729fc9}{calculateDataRange}}();}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_graph_controller_a1c13ea109ff733f0aa96de39b4087d29}{isConnectedGraph}}();}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00166\ \ \ \ \ std::pair<double,\ std::vector<uint16\_t>>\ \mbox{\hyperlink{class_graph_controller_ac53ba040efe50ccf97f87f89ac1d9d9f}{findTSPForDisconnectedGraph}}(\mbox{\hyperlink{class_vertex}{Vertex}}*\ startVertex);}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00174\ \ \ \ \ \mbox{\hyperlink{class_graph_controller_af8d00b5f8197c5f3efbe52d1165fb21e}{GraphController}}(std::unordered\_map<uint16\_t,\ Vertex*>\ \mbox{\hyperlink{class_graph_controller_ad90af81f1dc034c2b0f4c1efe0901622}{graph}},\ std::vector<std::vector<double>>\ graphAdj\_);}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00180\ \ \ \ \ std::pair<double,\ std::vector<uint16\_t>>\ \mbox{\hyperlink{class_graph_controller_a085eaca53ea7fcc5a7939493099111da}{minHamiltonianCicle}}();}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00186\ \ \ \ \ std::pair<double,\ std::vector<uint16\_t>>\ \mbox{\hyperlink{class_graph_controller_a5eed217f876499376d790707be6cccfb}{triangleInequalityApp}}();}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00192\ \ \ \ \ std::pair<double,\ std::vector<uint16\_t>>\ \mbox{\hyperlink{class_graph_controller_a1b8b75decda7a499bc9614a9f875ecb3}{clusterHeuristic}}();}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00199\ \ \ \ \ std::pair<double,\ std::vector<uint16\_t>>\ \mbox{\hyperlink{class_graph_controller_a577ec1a4802972d64c8864bb12c1daad}{solveTSPForDisconnectedGraph}}(uint16\_t\ startNode);}
+\DoxyCodeLine{00200\ \};}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ GRAPHCONTROLLER\_H}}
+
+\end{DoxyCode}

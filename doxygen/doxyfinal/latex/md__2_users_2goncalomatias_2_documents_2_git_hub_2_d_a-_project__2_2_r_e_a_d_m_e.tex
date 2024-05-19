@@ -1,0 +1,65 @@
+\chapter{DA-\/\+Project\+\_\+2}
+\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e}{}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e}\index{DA-\/Project\_2@{DA-\/Project\_2}}
+\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md0}%
+ \hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md1}{}\doxysection{\texorpdfstring{Routing Algorithm for Ocean Shipping and Urban Deliveries}{Routing Algorithm for Ocean Shipping and Urban Deliveries}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md1}
+\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md2}{}\doxysubsection{\texorpdfstring{Introduction}{Introduction}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md2}
+Developed for the Design of Algorithms course (Spring 2024) at the University of Porto, this project focuses on analyzing and solving the Travelling Salesperson Problem (TSP) in the context of ocean shipping and urban deliveries. It utilizes various heuristic approaches to efficiently handle complex routing problems that are otherwise intractable due to their size and constraints.\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{\texorpdfstring{Team Members}{Team Members}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md3}
+
+\begin{DoxyItemize}
+\item Rodrigo Ferreira Alves -\/ up202207478
+\item Gonçalo de Abreu Matias -\/ up202108703
+\item David Tavares Simões -\/ up202210329
+\end{DoxyItemize}\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{\texorpdfstring{Features}{Features}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md4}
+
+\begin{DoxyItemize}
+\item Implementation of a basic exhaustive TSP approach for small graphs.
+\item Development of heuristic algorithms, including a triangular approximation approach for larger datasets.
+\item Data parsing and processing from provided CSV files.
+\item User-\/friendly menu interface for selecting and running different algorithmic approaches.
+\item Visual and analytical presentation of algorithmic performance and efficiency.
+\end{DoxyItemize}\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{\texorpdfstring{Algorithmic Approach}{Algorithmic Approach}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md5}
+The project uses a combination of backtracking for small graphs and heuristic methods for larger problems. A particular focus is on the triangular approximation heuristic, which provides a guaranteed approximation bound for certain classes of graphs.\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{\texorpdfstring{Documentation}{Documentation}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md6}
+The project\textquotesingle{}s documentation is generated using Doxygen and is available under the {\ttfamily docs} directory. It includes detailed descriptions of all implemented functions and algorithms, along with their time complexity analysis.\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md7}{}\doxysubsection{\texorpdfstring{Usage}{Usage}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md7}
+\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md8}{}\doxysubsubsection{\texorpdfstring{User Interface}{User Interface}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md8}
+The application provides a user-\/friendly interface with the following options\+:
+\begin{DoxyEnumerate}
+\item Load Graph
+\item Execute TSP Backtracking
+\item Execute Triangular Approximation
+\item Execute \doxylink{struct_cluster}{Cluster} Approximation
+\item Execute TSP for Disconnected Graph
+\item Exit
+\end{DoxyEnumerate}\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md9}{}\doxysubsubsection{\texorpdfstring{Loading Graphs}{Loading Graphs}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md9}
+Users can load different types of graphs\+:
+\begin{DoxyItemize}
+\item Toy Graphs
+\item Real World Graphs
+\item Extra Fully Connected Graphs
+\end{DoxyItemize}\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md10}{}\doxysubsubsection{\texorpdfstring{Running Algorithms}{Running Algorithms}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md10}
+After loading the graphs, users can run the following algorithms\+:
+\begin{DoxyItemize}
+\item {\bfseries{Backtracking TSP}}\+: Finds the optimal solution for small graphs.
+\item {\bfseries{Triangular Approximation}}\+: Provides a 2-\/approximation solution for the TSP.
+\item {\bfseries{\doxylink{struct_cluster}{Cluster} Approximation}}\+: Solves the TSP using clustering heuristics.
+\item {\bfseries{TSP for Disconnected Graphs}}\+: Handles real-\/world graphs that are not fully connected.
+\end{DoxyItemize}\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md11}{}\doxysubsection{\texorpdfstring{File Structure}{File Structure}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md11}
+
+\begin{DoxyItemize}
+\item {\ttfamily \doxylink{_edge_8h_source}{Edge.\+h}} / {\ttfamily Edge.\+cpp}\+: Defines the {\ttfamily \doxylink{class_edge}{Edge}} class representing graph edges.
+\item {\ttfamily \doxylink{_graph_controller_8h_source}{Graph\+Controller.\+h}} / {\ttfamily Graph\+Controller.\+cpp}\+: Manages graph operations and algorithms.
+\item {\ttfamily \doxylink{_graph_loader_8h_source}{Graph\+Loader.\+h}} / {\ttfamily Graph\+Loader.\+cpp}\+: Handles loading and parsing of graph data from CSV files.
+\item {\ttfamily \doxylink{class_mutable_priority_queue_afbe461c0a2ea2f16006ed7e1bf9c105d}{Mutable\+Priority\+Queue.\+h}}\+: Implements a mutable priority queue used in Dijkstra\textquotesingle{}s algorithm.
+\item {\ttfamily TSPBacktracking.\+h}\+: Contains the backtracking algorithm for solving TSP.
+\item {\ttfamily \doxylink{_user_interface_8h_source}{User\+Interface.\+h}} / {\ttfamily User\+Interface.\+cpp}\+: Provides the user interface for the application.
+\item {\ttfamily \doxylink{_vertex_8h_source}{Vertex.\+h}} / {\ttfamily Vertex.\+cpp}\+: Defines the {\ttfamily \doxylink{class_vertex}{Vertex}} class representing graph vertices.
+\end{DoxyItemize}\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md12}{}\doxysubsection{\texorpdfstring{Conclusion}{Conclusion}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md12}
+This project provides a comprehensive solution to the TSP in the context of ocean shipping and urban deliveries, demonstrating the applicability of both exact and heuristic approaches to solve complex routing problems efficiently.\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md13}{}\doxysubsection{\texorpdfstring{Acknowledgements}{Acknowledgements}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md13}
+This project was developed under the guidance of the DA 2024 Instructors Team at the University of Porto.\hypertarget{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md14}{}\doxysubsection{\texorpdfstring{References}{References}}\label{md__2_users_2goncalomatias_2_documents_2_git_hub_2_d_a-_project__2_2_r_e_a_d_m_e_autotoc_md14}
+
+\begin{DoxyItemize}
+\item Project Description\+: \mbox{[}Programming Project II Description\mbox{]}(file-\/\+Abn8dh\+Bz\+Zm\+ZY0k\+TOZ36\+Og\+EvB)
+\item Haversine Formula\+: \href{https://en.wikipedia.org/wiki/Haversine_formula}{\texttt{ Wikipedia}}
+\item Git\+Hub C++ Implementation\+: \href{https://github.com/AhiyaHiya/haversine}{\texttt{ haversine}}
+\item scikit-\/mobility Python Implementation\+: \href{https://github.com/scikit-mobility/scikit-mobility/blob/master/skmob/utils/gislib.py}{\texttt{ gislib.\+py}} 
+\end{DoxyItemize}

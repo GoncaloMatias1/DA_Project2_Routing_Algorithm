@@ -1,0 +1,81 @@
+\doxysection{Cluster Struct Reference}
+\hypertarget{struct_cluster}{}\label{struct_cluster}\index{Cluster@{Cluster}}
+
+
+Represents a cluster of nodes in the graph.  
+
+
+
+
+{\ttfamily \#include $<$Graph\+Controller.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ uint16\+\_\+t $>$ \mbox{\hyperlink{struct_cluster_a425a53ebf6357806bc3635bbeb4c48ab}{nodes}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{struct_cluster_afb4940d399b9825c50015574cb5e1665}{cluster\+Id}}
+\item 
+\mbox{\hyperlink{struct_coordinate}{Coordinate}} \mbox{\hyperlink{struct_cluster_aa763e5a664bd2e1b9f7c10dacb2a2651}{center}}
+\item 
+std\+::vector$<$ uint16\+\_\+t $>$ \mbox{\hyperlink{struct_cluster_a0559a5a7d5b7097caaf0434c743caacb}{tour}}
+\item 
+double \mbox{\hyperlink{struct_cluster_acc4de7b4b0ece56cc6b2931e9d4249b7}{tour\+Cost}} = 0
+\item 
+bool \mbox{\hyperlink{struct_cluster_af2bcd052132249bb0b35f77ea1432150}{root\+Cluster}} = false
+\item 
+bool \mbox{\hyperlink{struct_cluster_a92ec9ea15bcbb3e091fbafe248023763}{processed}} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a cluster of nodes in the graph. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_cluster_aa763e5a664bd2e1b9f7c10dacb2a2651}\label{struct_cluster_aa763e5a664bd2e1b9f7c10dacb2a2651} 
+\index{Cluster@{Cluster}!center@{center}}
+\index{center@{center}!Cluster@{Cluster}}
+\doxysubsubsection{\texorpdfstring{center}{center}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_coordinate}{Coordinate}} Cluster\+::center}
+
+Center coordinate of the cluster. \Hypertarget{struct_cluster_afb4940d399b9825c50015574cb5e1665}\label{struct_cluster_afb4940d399b9825c50015574cb5e1665} 
+\index{Cluster@{Cluster}!clusterId@{clusterId}}
+\index{clusterId@{clusterId}!Cluster@{Cluster}}
+\doxysubsubsection{\texorpdfstring{clusterId}{clusterId}}
+{\footnotesize\ttfamily uint16\+\_\+t Cluster\+::cluster\+Id}
+
+Identifier for the cluster. \Hypertarget{struct_cluster_a425a53ebf6357806bc3635bbeb4c48ab}\label{struct_cluster_a425a53ebf6357806bc3635bbeb4c48ab} 
+\index{Cluster@{Cluster}!nodes@{nodes}}
+\index{nodes@{nodes}!Cluster@{Cluster}}
+\doxysubsubsection{\texorpdfstring{nodes}{nodes}}
+{\footnotesize\ttfamily std\+::vector$<$uint16\+\_\+t$>$ Cluster\+::nodes}
+
+Nodes in the cluster. \Hypertarget{struct_cluster_a92ec9ea15bcbb3e091fbafe248023763}\label{struct_cluster_a92ec9ea15bcbb3e091fbafe248023763} 
+\index{Cluster@{Cluster}!processed@{processed}}
+\index{processed@{processed}!Cluster@{Cluster}}
+\doxysubsubsection{\texorpdfstring{processed}{processed}}
+{\footnotesize\ttfamily bool Cluster\+::processed = false}
+
+Indicates if the cluster has been processed. \Hypertarget{struct_cluster_af2bcd052132249bb0b35f77ea1432150}\label{struct_cluster_af2bcd052132249bb0b35f77ea1432150} 
+\index{Cluster@{Cluster}!rootCluster@{rootCluster}}
+\index{rootCluster@{rootCluster}!Cluster@{Cluster}}
+\doxysubsubsection{\texorpdfstring{rootCluster}{rootCluster}}
+{\footnotesize\ttfamily bool Cluster\+::root\+Cluster = false}
+
+Indicates if this is the root cluster. \Hypertarget{struct_cluster_a0559a5a7d5b7097caaf0434c743caacb}\label{struct_cluster_a0559a5a7d5b7097caaf0434c743caacb} 
+\index{Cluster@{Cluster}!tour@{tour}}
+\index{tour@{tour}!Cluster@{Cluster}}
+\doxysubsubsection{\texorpdfstring{tour}{tour}}
+{\footnotesize\ttfamily std\+::vector$<$uint16\+\_\+t$>$ Cluster\+::tour}
+
+Tour of the cluster nodes. \Hypertarget{struct_cluster_acc4de7b4b0ece56cc6b2931e9d4249b7}\label{struct_cluster_acc4de7b4b0ece56cc6b2931e9d4249b7} 
+\index{Cluster@{Cluster}!tourCost@{tourCost}}
+\index{tourCost@{tourCost}!Cluster@{Cluster}}
+\doxysubsubsection{\texorpdfstring{tourCost}{tourCost}}
+{\footnotesize\ttfamily double Cluster\+::tour\+Cost = 0}
+
+Cost of the tour. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/goncalomatias/\+Documents/\+Git\+Hub/\+DA-\/\+Project\+\_\+2/include/Graph\+Controller.\+h\end{DoxyCompactItemize}

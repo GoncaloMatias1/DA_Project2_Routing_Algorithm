@@ -1,0 +1,33 @@
+\doxysection{Graph\+Loader.\+h}
+\hypertarget{_graph_loader_8h_source}{}\label{_graph_loader_8h_source}\index{/Users/goncalomatias/Documents/GitHub/DA-\/Project\_2/include/GraphLoader.h@{/Users/goncalomatias/Documents/GitHub/DA-\/Project\_2/include/GraphLoader.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ GRAPH\_LOADER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ GRAPH\_LOADER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}GraphController.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}Edge.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_graph_loader}{GraphLoader}}\ \{}
+\DoxyCodeLine{00020\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ std::pair<std::unordered\_map<uint16\_t,\ Vertex*>,\ std::vector<std::vector<double>>>\ \mbox{\hyperlink{class_graph_loader_a8941ed9434388f12ef5001a47099a336}{loadToyGraph}}(\textcolor{keyword}{const}\ std::string\&\ fileName);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00033\ \ \ \ \ std::pair<std::unordered\_map<uint16\_t,\ Vertex*>,\ std::vector<std::vector<double>>>\ \mbox{\hyperlink{class_graph_loader_a7f762f559575c0c327ffbb95580a9603}{loadRealGraph}}(\textcolor{keyword}{const}\ std::string\&\ fileName);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00040\ \ \ \ \ std::pair<std::unordered\_map<uint16\_t,\ Vertex*>,\ std::vector<std::vector<double>>>\ \mbox{\hyperlink{class_graph_loader_ad7b754fed68424646544ea54cd3eb2a2}{loadExtraFullGraph}}(\textcolor{keyword}{const}\ std::string\&\ fileName);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_graph_loader_a541b5b8f0bf9f56d93638d64b18d37a6}{parseDouble}}(\textcolor{keyword}{const}\ std::string\&\ str);}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ GRAPH\_LOADER\_H}}
+
+\end{DoxyCode}

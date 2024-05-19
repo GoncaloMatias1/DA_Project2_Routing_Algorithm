@@ -1,0 +1,464 @@
+\doxysection{Graph\+Controller Class Reference}
+\hypertarget{class_graph_controller}{}\label{class_graph_controller}\index{GraphController@{GraphController}}
+
+
+Manages graph operations and algorithms.  
+
+
+
+
+{\ttfamily \#include $<$Graph\+Controller.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_graph_controller_af8d00b5f8197c5f3efbe52d1165fb21e}{Graph\+Controller}} (std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{class_graph_controller_ad90af81f1dc034c2b0f4c1efe0901622}{graph}}, std\+::vector$<$ std\+::vector$<$ double $>$ $>$ graph\+Adj\+\_\+)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_graph_controller}{Graph\+Controller} with a given graph and adjacency matrix. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{class_graph_controller_a085eaca53ea7fcc5a7939493099111da}{min\+Hamiltonian\+Cicle}} ()
+\begin{DoxyCompactList}\small\item\em Finds the minimum Hamiltonian cycle in the graph. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{class_graph_controller_a5eed217f876499376d790707be6cccfb}{triangle\+Inequality\+App}} ()
+\begin{DoxyCompactList}\small\item\em Solves the TSP using the triangle inequality approximation. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{class_graph_controller_a1b8b75decda7a499bc9614a9f875ecb3}{cluster\+Heuristic}} ()
+\begin{DoxyCompactList}\small\item\em Solves the TSP using a cluster heuristic. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{class_graph_controller_a577ec1a4802972d64c8864bb12c1daad}{solve\+TSPFor\+Disconnected\+Graph}} (uint16\+\_\+t start\+Node)
+\begin{DoxyCompactList}\small\item\em Solves the TSP for a disconnected graph starting from a given node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_graph_controller_a16031faa3b6156eb3022f74f281bc24e}{recursive\+Backtracking}} (\mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}curr\+\_\+vertex, double distance=0, const std\+::set$<$ uint16\+\_\+t $>$ \&visited=\{\}, std\+::vector$<$ uint16\+\_\+t $>$ path=\{\})
+\begin{DoxyCompactList}\small\item\em Recursive backtracking function to find the minimum Hamiltonian cycle. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_graph_controller_a68078386a0a60529f755ad69919e884e}{Bound}} (uint16\+\_\+t curr\+\_\+idx, double path\+Sum, const std\+::set$<$ uint16\+\_\+t $>$ \&visited) const
+\begin{DoxyCompactList}\small\item\em Checks if the current path can be pruned. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_graph_controller_af807d6dde55f72f243227eca81f756b4}{all\+Vertices\+Visited}} (const std\+::set$<$ uint16\+\_\+t $>$ \&visited) const
+\begin{DoxyCompactList}\small\item\em Checks if all vertices have been visited. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_graph_controller_a9ab09194de4a52de531be3955f35f4fa}{get\+MSTPrim}} (int root, std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&graph\+\_\+)
+\begin{DoxyCompactList}\small\item\em Computes the Minimum Spanning Tree (MST) using Prim\textquotesingle{}s algorithm. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_graph_controller_ade3e31ded131d0511e195798780a8bde}{preorder\+DFS}} (\mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}node, std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&result, const std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&graph\+\_\+)
+\begin{DoxyCompactList}\small\item\em Performs a pre-\/order depth-\/first search (DFS) on the graph. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{class_graph_controller_a5cf5382f6d722f00b0b06cd0441c2d90}{pre\+Order\+Walk}} (std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&graph\+\_\+)
+\begin{DoxyCompactList}\small\item\em Gets the pre-\/order walk of the graph. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_graph_controller_a5e330f574f1ba77a55b563fd0046d029}{get\+Cost\+From\+Walk}} (std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ walk, std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&\mbox{\hyperlink{class_graph_controller_ad90af81f1dc034c2b0f4c1efe0901622}{graph}})
+\begin{DoxyCompactList}\small\item\em Gets the cost of a given walk. \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{struct_cluster}{Cluster}} $>$ \mbox{\hyperlink{class_graph_controller_a14c56b2629e92c7b843d0d5c54923796}{kmeans\+Clustering}} ()
+\begin{DoxyCompactList}\small\item\em Performs k-\/means clustering on the graph. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{class_graph_controller_a2f7ee3d477ed41f6d518c084996b5052}{full\+NN}} ()
+\begin{DoxyCompactList}\small\item\em Computes the full nearest neighbor tour. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_graph_controller_abe5d47d04f2199df0ecce8474a1fe5b4}{tour\+NNFrom\+Cluster}} (\mbox{\hyperlink{struct_cluster}{Cluster}} \&cluster)
+\begin{DoxyCompactList}\small\item\em Computes the nearest neighbor tour for a given cluster. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{class_graph_controller_a92a55b18c7166a17cce06173cf881ac9}{tour\+NNInter\+Clusters}} (\mbox{\hyperlink{struct_cluster}{Cluster}} \&root, std\+::vector$<$ \mbox{\hyperlink{struct_cluster}{Cluster}} $>$ \&clusters)
+\begin{DoxyCompactList}\small\item\em Computes the nearest neighbor tour between clusters. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_graph_controller_a6b199cb267f9d01aa846f218a534b026}{convert\+To\+Radians}} (double coord)
+\begin{DoxyCompactList}\small\item\em Converts a coordinate to radians. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_graph_controller_a56f29c705f1ae2454885f94668b06b28}{haversine}} (\mbox{\hyperlink{struct_coordinate}{Coordinate}} coo1, \mbox{\hyperlink{struct_coordinate}{Coordinate}} coo2)
+\begin{DoxyCompactList}\small\item\em Computes the Haversine distance between two coordinates. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_graph_controller_a9c3d1b4e0778256e18f092df72729fc9}{calculate\+Data\+Range}} ()
+\begin{DoxyCompactList}\small\item\em Calculates the data range for clustering. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_graph_controller_a1c13ea109ff733f0aa96de39b4087d29}{is\+Connected\+Graph}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the graph is connected. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{class_graph_controller_ac53ba040efe50ccf97f87f89ac1d9d9f}{find\+TSPFor\+Disconnected\+Graph}} (\mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}start\+Vertex)
+\begin{DoxyCompactList}\small\item\em Finds the TSP solution for a disconnected graph starting from a given vertex. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{class_graph_controller_ad90af81f1dc034c2b0f4c1efe0901622}{graph}}
+\item 
+std\+::vector$<$ std\+::vector$<$ double $>$ $>$ \mbox{\hyperlink{class_graph_controller_a0ab6882f1ec61580fe4aff06036e953c}{graph\+Adj}}
+\item 
+double \mbox{\hyperlink{class_graph_controller_a45e289ef1dd6283dbd44a7c9768a3e24}{min\+\_\+distance}} = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()
+\item 
+std\+::vector$<$ uint16\+\_\+t $>$ \mbox{\hyperlink{class_graph_controller_a0f7c60577af43b825530976aa1e0c3b1}{min\+Path}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages graph operations and algorithms. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_graph_controller_af8d00b5f8197c5f3efbe52d1165fb21e}\label{class_graph_controller_af8d00b5f8197c5f3efbe52d1165fb21e} 
+\index{GraphController@{GraphController}!GraphController@{GraphController}}
+\index{GraphController@{GraphController}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{GraphController()}{GraphController()}}
+{\footnotesize\ttfamily Graph\+Controller\+::\+Graph\+Controller (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$}]{graph,  }\item[{std\+::vector$<$ std\+::vector$<$ double $>$ $>$}]{graph\+Adj\+\_\+ }\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{class_graph_controller}{Graph\+Controller} with a given graph and adjacency matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em graph} & The graph represented as an adjacency list. \\
+\hline
+{\em graph\+Adj} & The adjacency matrix for the graph. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_graph_controller_af807d6dde55f72f243227eca81f756b4}\label{class_graph_controller_af807d6dde55f72f243227eca81f756b4} 
+\index{GraphController@{GraphController}!allVerticesVisited@{allVerticesVisited}}
+\index{allVerticesVisited@{allVerticesVisited}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{allVerticesVisited()}{allVerticesVisited()}}
+{\footnotesize\ttfamily bool Graph\+Controller\+::all\+Vertices\+Visited (\begin{DoxyParamCaption}\item[{const std\+::set$<$ uint16\+\_\+t $>$ \&}]{visited }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Checks if all vertices have been visited. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em visited} & Set of visited nodes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if all vertices are visited, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a68078386a0a60529f755ad69919e884e}\label{class_graph_controller_a68078386a0a60529f755ad69919e884e} 
+\index{GraphController@{GraphController}!Bound@{Bound}}
+\index{Bound@{Bound}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{Bound()}{Bound()}}
+{\footnotesize\ttfamily bool Graph\+Controller\+::\+Bound (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{curr\+\_\+idx,  }\item[{double}]{path\+Sum,  }\item[{const std\+::set$<$ uint16\+\_\+t $>$ \&}]{visited }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Checks if the current path can be pruned. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em curr\+\_\+idx} & Current vertex index. \\
+\hline
+{\em path\+Sum} & The current path sum. \\
+\hline
+{\em visited} & Set of visited nodes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the path can be pruned, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a9c3d1b4e0778256e18f092df72729fc9}\label{class_graph_controller_a9c3d1b4e0778256e18f092df72729fc9} 
+\index{GraphController@{GraphController}!calculateDataRange@{calculateDataRange}}
+\index{calculateDataRange@{calculateDataRange}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{calculateDataRange()}{calculateDataRange()}}
+{\footnotesize\ttfamily double Graph\+Controller\+::calculate\+Data\+Range (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calculates the data range for clustering. 
+
+\begin{DoxyReturn}{Returns}
+The calculated data range. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a1b8b75decda7a499bc9614a9f875ecb3}\label{class_graph_controller_a1b8b75decda7a499bc9614a9f875ecb3} 
+\index{GraphController@{GraphController}!clusterHeuristic@{clusterHeuristic}}
+\index{clusterHeuristic@{clusterHeuristic}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{clusterHeuristic()}{clusterHeuristic()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::cluster\+Heuristic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the TSP using a cluster heuristic. 
+
+\begin{DoxyReturn}{Returns}
+Pair of tour cost and tour path. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a6b199cb267f9d01aa846f218a534b026}\label{class_graph_controller_a6b199cb267f9d01aa846f218a534b026} 
+\index{GraphController@{GraphController}!convertToRadians@{convertToRadians}}
+\index{convertToRadians@{convertToRadians}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{convertToRadians()}{convertToRadians()}}
+{\footnotesize\ttfamily double Graph\+Controller\+::convert\+To\+Radians (\begin{DoxyParamCaption}\item[{double}]{coord }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Converts a coordinate to radians. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coord} & The coordinate to convert. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The coordinate in radians. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_ac53ba040efe50ccf97f87f89ac1d9d9f}\label{class_graph_controller_ac53ba040efe50ccf97f87f89ac1d9d9f} 
+\index{GraphController@{GraphController}!findTSPForDisconnectedGraph@{findTSPForDisconnectedGraph}}
+\index{findTSPForDisconnectedGraph@{findTSPForDisconnectedGraph}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{findTSPForDisconnectedGraph()}{findTSPForDisconnectedGraph()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::find\+TSPFor\+Disconnected\+Graph (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}}]{start\+Vertex }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Finds the TSP solution for a disconnected graph starting from a given vertex. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Vertex} & The starting vertex. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pair of tour cost and tour path. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a2f7ee3d477ed41f6d518c084996b5052}\label{class_graph_controller_a2f7ee3d477ed41f6d518c084996b5052} 
+\index{GraphController@{GraphController}!fullNN@{fullNN}}
+\index{fullNN@{fullNN}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{fullNN()}{fullNN()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::full\+NN (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the full nearest neighbor tour. 
+
+\begin{DoxyReturn}{Returns}
+Pair of tour cost and tour path. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a5e330f574f1ba77a55b563fd0046d029}\label{class_graph_controller_a5e330f574f1ba77a55b563fd0046d029} 
+\index{GraphController@{GraphController}!getCostFromWalk@{getCostFromWalk}}
+\index{getCostFromWalk@{getCostFromWalk}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{getCostFromWalk()}{getCostFromWalk()}}
+{\footnotesize\ttfamily double Graph\+Controller\+::get\+Cost\+From\+Walk (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$}]{walk,  }\item[{std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&}]{graph }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Gets the cost of a given walk. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em walk} & The walk to compute the cost for. \\
+\hline
+{\em graph} & The graph to compute the cost on. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The cost of the walk. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a9ab09194de4a52de531be3955f35f4fa}\label{class_graph_controller_a9ab09194de4a52de531be3955f35f4fa} 
+\index{GraphController@{GraphController}!getMSTPrim@{getMSTPrim}}
+\index{getMSTPrim@{getMSTPrim}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{getMSTPrim()}{getMSTPrim()}}
+{\footnotesize\ttfamily void Graph\+Controller\+::get\+MSTPrim (\begin{DoxyParamCaption}\item[{int}]{root,  }\item[{std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&}]{graph\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the Minimum Spanning Tree (MST) using Prim\textquotesingle{}s algorithm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & The root vertex for the MST. \\
+\hline
+{\em graph\+\_\+} & The graph to compute the MST on. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_graph_controller_a56f29c705f1ae2454885f94668b06b28}\label{class_graph_controller_a56f29c705f1ae2454885f94668b06b28} 
+\index{GraphController@{GraphController}!haversine@{haversine}}
+\index{haversine@{haversine}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{haversine()}{haversine()}}
+{\footnotesize\ttfamily double Graph\+Controller\+::haversine (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_coordinate}{Coordinate}}}]{coo1,  }\item[{\mbox{\hyperlink{struct_coordinate}{Coordinate}}}]{coo2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the Haversine distance between two coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coo1} & The first coordinate. \\
+\hline
+{\em coo2} & The second coordinate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The Haversine distance between the coordinates. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a1c13ea109ff733f0aa96de39b4087d29}\label{class_graph_controller_a1c13ea109ff733f0aa96de39b4087d29} 
+\index{GraphController@{GraphController}!isConnectedGraph@{isConnectedGraph}}
+\index{isConnectedGraph@{isConnectedGraph}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{isConnectedGraph()}{isConnectedGraph()}}
+{\footnotesize\ttfamily bool Graph\+Controller\+::is\+Connected\+Graph (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Checks if the graph is connected. 
+
+\begin{DoxyReturn}{Returns}
+True if the graph is connected, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a14c56b2629e92c7b843d0d5c54923796}\label{class_graph_controller_a14c56b2629e92c7b843d0d5c54923796} 
+\index{GraphController@{GraphController}!kmeansClustering@{kmeansClustering}}
+\index{kmeansClustering@{kmeansClustering}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{kmeansClustering()}{kmeansClustering()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{struct_cluster}{Cluster}} $>$ Graph\+Controller\+::kmeans\+Clustering (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Performs k-\/means clustering on the graph. 
+
+\begin{DoxyReturn}{Returns}
+Vector of clusters. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a085eaca53ea7fcc5a7939493099111da}\label{class_graph_controller_a085eaca53ea7fcc5a7939493099111da} 
+\index{GraphController@{GraphController}!minHamiltonianCicle@{minHamiltonianCicle}}
+\index{minHamiltonianCicle@{minHamiltonianCicle}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{minHamiltonianCicle()}{minHamiltonianCicle()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::min\+Hamiltonian\+Cicle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Finds the minimum Hamiltonian cycle in the graph. 
+
+\begin{DoxyReturn}{Returns}
+Pair of cycle cost and cycle path. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_ade3e31ded131d0511e195798780a8bde}\label{class_graph_controller_ade3e31ded131d0511e195798780a8bde} 
+\index{GraphController@{GraphController}!preorderDFS@{preorderDFS}}
+\index{preorderDFS@{preorderDFS}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{preorderDFS()}{preorderDFS()}}
+{\footnotesize\ttfamily void Graph\+Controller\+::preorder\+DFS (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}}]{node,  }\item[{std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&}]{result,  }\item[{const std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&}]{graph\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Performs a pre-\/order depth-\/first search (DFS) on the graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em node} & The starting node for the DFS. \\
+\hline
+{\em result} & Vector to store the DFS result. \\
+\hline
+{\em graph\+\_\+} & The graph to perform the DFS on. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_graph_controller_a5cf5382f6d722f00b0b06cd0441c2d90}\label{class_graph_controller_a5cf5382f6d722f00b0b06cd0441c2d90} 
+\index{GraphController@{GraphController}!preOrderWalk@{preOrderWalk}}
+\index{preOrderWalk@{preOrderWalk}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{preOrderWalk()}{preOrderWalk()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ Graph\+Controller\+::pre\+Order\+Walk (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&}]{graph\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Gets the pre-\/order walk of the graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em graph\+\_\+} & The graph to get the pre-\/order walk from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Vector of vertices in pre-\/order. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a16031faa3b6156eb3022f74f281bc24e}\label{class_graph_controller_a16031faa3b6156eb3022f74f281bc24e} 
+\index{GraphController@{GraphController}!recursiveBacktracking@{recursiveBacktracking}}
+\index{recursiveBacktracking@{recursiveBacktracking}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{recursiveBacktracking()}{recursiveBacktracking()}}
+{\footnotesize\ttfamily void Graph\+Controller\+::recursive\+Backtracking (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}}]{curr\+\_\+vertex,  }\item[{double}]{distance = {\ttfamily 0},  }\item[{const std\+::set$<$ uint16\+\_\+t $>$ \&}]{visited = {\ttfamily \{\}},  }\item[{std\+::vector$<$ uint16\+\_\+t $>$}]{path = {\ttfamily \{\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Recursive backtracking function to find the minimum Hamiltonian cycle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em curr\+\_\+vertex} & The current vertex in the backtracking. \\
+\hline
+{\em distance} & The current distance traveled. \\
+\hline
+{\em visited} & Set of visited nodes. \\
+\hline
+{\em path} & Current path being explored. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_graph_controller_a577ec1a4802972d64c8864bb12c1daad}\label{class_graph_controller_a577ec1a4802972d64c8864bb12c1daad} 
+\index{GraphController@{GraphController}!solveTSPForDisconnectedGraph@{solveTSPForDisconnectedGraph}}
+\index{solveTSPForDisconnectedGraph@{solveTSPForDisconnectedGraph}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{solveTSPForDisconnectedGraph()}{solveTSPForDisconnectedGraph()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::solve\+TSPFor\+Disconnected\+Graph (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{start\+Node }\end{DoxyParamCaption})}
+
+
+
+Solves the TSP for a disconnected graph starting from a given node. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Node} & The starting node. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pair of tour cost and tour path. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_abe5d47d04f2199df0ecce8474a1fe5b4}\label{class_graph_controller_abe5d47d04f2199df0ecce8474a1fe5b4} 
+\index{GraphController@{GraphController}!tourNNFromCluster@{tourNNFromCluster}}
+\index{tourNNFromCluster@{tourNNFromCluster}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{tourNNFromCluster()}{tourNNFromCluster()}}
+{\footnotesize\ttfamily void Graph\+Controller\+::tour\+NNFrom\+Cluster (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cluster}{Cluster}} \&}]{cluster }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the nearest neighbor tour for a given cluster. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cluster} & The cluster to compute the tour for. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_graph_controller_a92a55b18c7166a17cce06173cf881ac9}\label{class_graph_controller_a92a55b18c7166a17cce06173cf881ac9} 
+\index{GraphController@{GraphController}!tourNNInterClusters@{tourNNInterClusters}}
+\index{tourNNInterClusters@{tourNNInterClusters}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{tourNNInterClusters()}{tourNNInterClusters()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::tour\+NNInter\+Clusters (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_cluster}{Cluster}} \&}]{root,  }\item[{std\+::vector$<$ \mbox{\hyperlink{struct_cluster}{Cluster}} $>$ \&}]{clusters }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Computes the nearest neighbor tour between clusters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & The root cluster. \\
+\hline
+{\em clusters} & Vector of clusters. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pair of inter-\/cluster tour cost and tour path. 
+\end{DoxyReturn}
+\Hypertarget{class_graph_controller_a5eed217f876499376d790707be6cccfb}\label{class_graph_controller_a5eed217f876499376d790707be6cccfb} 
+\index{GraphController@{GraphController}!triangleInequalityApp@{triangleInequalityApp}}
+\index{triangleInequalityApp@{triangleInequalityApp}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{triangleInequalityApp()}{triangleInequalityApp()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::triangle\+Inequality\+App (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the TSP using the triangle inequality approximation. 
+
+\begin{DoxyReturn}{Returns}
+Pair of tour cost and tour path. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_graph_controller_ad90af81f1dc034c2b0f4c1efe0901622}\label{class_graph_controller_ad90af81f1dc034c2b0f4c1efe0901622} 
+\index{GraphController@{GraphController}!graph@{graph}}
+\index{graph@{graph}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{graph}{graph}}
+{\footnotesize\ttfamily std\+::unordered\+\_\+map$<$uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}}\texorpdfstring{$\ast$}{*}$>$ Graph\+Controller\+::graph\hspace{0.3cm}{\ttfamily [private]}}
+
+The graph represented as an adjacency list. \Hypertarget{class_graph_controller_a0ab6882f1ec61580fe4aff06036e953c}\label{class_graph_controller_a0ab6882f1ec61580fe4aff06036e953c} 
+\index{GraphController@{GraphController}!graphAdj@{graphAdj}}
+\index{graphAdj@{graphAdj}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{graphAdj}{graphAdj}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::vector$<$double$>$ $>$ Graph\+Controller\+::graph\+Adj\hspace{0.3cm}{\ttfamily [private]}}
+
+Adjacency matrix for the graph. \Hypertarget{class_graph_controller_a45e289ef1dd6283dbd44a7c9768a3e24}\label{class_graph_controller_a45e289ef1dd6283dbd44a7c9768a3e24} 
+\index{GraphController@{GraphController}!min\_distance@{min\_distance}}
+\index{min\_distance@{min\_distance}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{min\_distance}{min\_distance}}
+{\footnotesize\ttfamily double Graph\+Controller\+::min\+\_\+distance = std\+::numeric\+\_\+limits$<$double$>$\+::infinity()\hspace{0.3cm}{\ttfamily [private]}}
+
+Minimum distance found for Hamiltonian cycle. \Hypertarget{class_graph_controller_a0f7c60577af43b825530976aa1e0c3b1}\label{class_graph_controller_a0f7c60577af43b825530976aa1e0c3b1} 
+\index{GraphController@{GraphController}!minPath@{minPath}}
+\index{minPath@{minPath}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{minPath}{minPath}}
+{\footnotesize\ttfamily std\+::vector$<$uint16\+\_\+t$>$ Graph\+Controller\+::min\+Path\hspace{0.3cm}{\ttfamily [private]}}
+
+Path representing the minimum Hamiltonian cycle. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/goncalomatias/\+Documents/\+Git\+Hub/\+DA-\/\+Project\+\_\+2/include/Graph\+Controller.\+h\item 
+/\+Users/goncalomatias/\+Documents/\+Git\+Hub/\+DA-\/\+Project\+\_\+2/src/Graph\+Controller.\+cpp\end{DoxyCompactItemize}
