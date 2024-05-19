@@ -458,10 +458,17 @@ bool GraphController::isConnectedGraph() {
 }
 
 std::pair<double, std::vector<uint16_t>> GraphController::solveTSPForDisconnectedGraph(uint16_t startNode) {
+    auto t1 = std::chrono::high_resolution_clock::now();
+
+
+
     if (!isConnectedGraph()) {
         return {std::numeric_limits<double>::infinity(), {}};
     }
-    return findTSPForDisconnectedGraph(graph[startNode]);
+    auto result = findTSPForDisconnectedGraph(graph[startNode]);
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::cout << "Time to run tsp for disconnected: " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 -t1).count() << "milliseconds" << std::endl;
+    return result;
 }
 
 std::pair<double, std::vector<uint16_t>> GraphController::findTSPForDisconnectedGraph(Vertex* startVertex) {

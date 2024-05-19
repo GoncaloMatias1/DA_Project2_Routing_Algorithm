@@ -1,0 +1,113 @@
+\hypertarget{classGraphController}{}\doxysection{Graph\+Controller Class Reference}
+\label{classGraphController}\index{GraphController@{GraphController}}
+
+
+Manages graph operations and algorithms.  
+
+
+
+
+{\ttfamily \#include $<$Graph\+Controller.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGraphController_a3d031190c90aa201eb5558568a927a08}{Graph\+Controller}} (std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{classVertex}{Vertex}} $\ast$ $>$ graph, std\+::vector$<$ std\+::vector$<$ double $>$$>$ graph\+Adj\+\_\+)
+\begin{DoxyCompactList}\small\item\em Constructs a \mbox{\hyperlink{classGraphController}{Graph\+Controller}} with a given graph and adjacency matrix. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{classGraphController_a085eaca53ea7fcc5a7939493099111da}{min\+Hamiltonian\+Cicle}} ()
+\begin{DoxyCompactList}\small\item\em Finds the minimum Hamiltonian cycle in the graph. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{classGraphController_a5eed217f876499376d790707be6cccfb}{triangle\+Inequality\+App}} ()
+\begin{DoxyCompactList}\small\item\em Solves the TSP using the triangle inequality approximation. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{classGraphController_a1b8b75decda7a499bc9614a9f875ecb3}{cluster\+Heuristic}} ()
+\begin{DoxyCompactList}\small\item\em Solves the TSP using a cluster heuristic. \end{DoxyCompactList}\item 
+std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ \mbox{\hyperlink{classGraphController_a577ec1a4802972d64c8864bb12c1daad}{solve\+TSPFor\+Disconnected\+Graph}} (uint16\+\_\+t start\+Node)
+\begin{DoxyCompactList}\small\item\em Solves the TSP for a disconnected graph starting from a given node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages graph operations and algorithms. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classGraphController_a3d031190c90aa201eb5558568a927a08}\label{classGraphController_a3d031190c90aa201eb5558568a927a08}} 
+\index{GraphController@{GraphController}!GraphController@{GraphController}}
+\index{GraphController@{GraphController}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{GraphController()}{GraphController()}}
+{\footnotesize\ttfamily Graph\+Controller\+::\+Graph\+Controller (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{classVertex}{Vertex}} $\ast$ $>$}]{graph,  }\item[{std\+::vector$<$ std\+::vector$<$ double $>$$>$}]{graph\+Adj\+\_\+ }\end{DoxyParamCaption})}
+
+
+
+Constructs a \mbox{\hyperlink{classGraphController}{Graph\+Controller}} with a given graph and adjacency matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em graph} & The graph represented as an adjacency list. \\
+\hline
+{\em graph\+Adj} & The adjacency matrix for the graph. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classGraphController_a1b8b75decda7a499bc9614a9f875ecb3}\label{classGraphController_a1b8b75decda7a499bc9614a9f875ecb3}} 
+\index{GraphController@{GraphController}!clusterHeuristic@{clusterHeuristic}}
+\index{clusterHeuristic@{clusterHeuristic}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{clusterHeuristic()}{clusterHeuristic()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::cluster\+Heuristic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the TSP using a cluster heuristic. 
+
+\begin{DoxyReturn}{Returns}
+Pair of tour cost and tour path. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraphController_a085eaca53ea7fcc5a7939493099111da}\label{classGraphController_a085eaca53ea7fcc5a7939493099111da}} 
+\index{GraphController@{GraphController}!minHamiltonianCicle@{minHamiltonianCicle}}
+\index{minHamiltonianCicle@{minHamiltonianCicle}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{minHamiltonianCicle()}{minHamiltonianCicle()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::min\+Hamiltonian\+Cicle (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Finds the minimum Hamiltonian cycle in the graph. 
+
+\begin{DoxyReturn}{Returns}
+Pair of cycle cost and cycle path. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraphController_a577ec1a4802972d64c8864bb12c1daad}\label{classGraphController_a577ec1a4802972d64c8864bb12c1daad}} 
+\index{GraphController@{GraphController}!solveTSPForDisconnectedGraph@{solveTSPForDisconnectedGraph}}
+\index{solveTSPForDisconnectedGraph@{solveTSPForDisconnectedGraph}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{solveTSPForDisconnectedGraph()}{solveTSPForDisconnectedGraph()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::solve\+TSPFor\+Disconnected\+Graph (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{start\+Node }\end{DoxyParamCaption})}
+
+
+
+Solves the TSP for a disconnected graph starting from a given node. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Node} & The starting node. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pair of tour cost and tour path. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraphController_a5eed217f876499376d790707be6cccfb}\label{classGraphController_a5eed217f876499376d790707be6cccfb}} 
+\index{GraphController@{GraphController}!triangleInequalityApp@{triangleInequalityApp}}
+\index{triangleInequalityApp@{triangleInequalityApp}!GraphController@{GraphController}}
+\doxysubsubsection{\texorpdfstring{triangleInequalityApp()}{triangleInequalityApp()}}
+{\footnotesize\ttfamily std\+::pair$<$ double, std\+::vector$<$ uint16\+\_\+t $>$ $>$ Graph\+Controller\+::triangle\+Inequality\+App (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Solves the TSP using the triangle inequality approximation. 
+
+\begin{DoxyReturn}{Returns}
+Pair of tour cost and tour path. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Graph\+Controller.\+h\item 
+src/Graph\+Controller.\+cpp\end{DoxyCompactItemize}

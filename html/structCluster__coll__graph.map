@@ -1,0 +1,4 @@
+<map id="Cluster" name="Cluster">
+<area shape="rect" id="node1" title="Represents a cluster of nodes in the graph." alt="" coords="18,95,86,121"/>
+<area shape="rect" id="node2" href="$structCoordinate.html" title="Represents a geographical coordinate with latitude and longitude." alt="" coords="5,5,99,32"/>
+</map>
