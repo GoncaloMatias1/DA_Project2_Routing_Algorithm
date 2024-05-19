@@ -9,7 +9,6 @@ double GraphLoader::parseDouble(const std::string& str) {
     return std::stod(str);
 }
 
-
 std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>>> GraphLoader::loadToyGraph(const std::string &fileName) {
     std::unordered_map<uint16_t, Vertex*> graph;
     std::vector<std::vector<double>> graphAdj;
@@ -28,7 +27,7 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
         std::istringstream lineStream(line);
         int src, dest;
 
-        try{
+        try {
             getline(lineStream, cell, ',');
             src = stoi(cell);
             getline(lineStream, cell, ',');
@@ -38,7 +37,7 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
                 maxSize = maxIndex;
             }
 
-        }catch (const std::invalid_argument& e){
+        } catch (const std::invalid_argument &e) {
             std::cout << "Error parsing csv file data [" << cell << "] : " << e.what() << std::endl;
         }
 
@@ -54,25 +53,25 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
         int src, dest;
         double weight;
 
-        try{
+        try {
             getline(lineStream, cell, ',');
             src = std::stoi(cell);
             getline(lineStream, cell, ',');
             dest = std::stoi(cell);
             getline(lineStream, cell);
             weight = std::stod(cell);
-        }catch (const std::invalid_argument& e){
+        } catch (const std::invalid_argument &e) {
             std::cout << "Error parsing csv file data [" << cell << "] : " << e.what() << std::endl;
         }
 
-        if(graph.find(src) == graph.end()){
-               graph[src] = new Vertex(src);
+        if (graph.find(src) == graph.end()) {
+            graph[src] = new Vertex(src);
         }
-        if(graph.find(dest) == graph.end()){
+        if (graph.find(dest) == graph.end()) {
             graph[dest] = new Vertex(dest);
         }
 
-        graph[src]->addEdge(new Edge(weight, graph[src],graph[dest]));
+        graph[src]->addEdge(new Edge(weight, graph[src], graph[dest]));
         graph[dest]->addEdge(new Edge(weight, graph[dest], graph[src]));
         graphAdj[src][dest] = weight;
         graphAdj[dest][src] = weight;
@@ -85,10 +84,9 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
 std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>>> GraphLoader::loadRealGraph(const std::string &fileName) {
     std::unordered_map<uint16_t, Vertex*> graph;
 
-
     uint16_t vertexCount = 0;
 
-    std::string path = "../data/Real_world_Graphs/" + fileName + "/";
+    std::string path = "../data/Real-World Graphs/";
     std::string edges = path + "edges.csv";
     std::string nodes = path + "nodes.csv";
 
@@ -111,7 +109,7 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
         int id;
         double longitude, latitude;
 
-        try{
+        try {
             getline(lineStream, cell, ',');
             id = stoi(cell);
             getline(lineStream, cell, ',');
@@ -121,7 +119,7 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
             graph[id] = new Vertex(id, {}, {latitude, longitude});
             vertexCount++;
 
-        }catch (const std::invalid_argument& e){
+        } catch (const std::invalid_argument &e) {
             std::cout << "Error parsing csv file data [" << cell << "] : " << e.what() << std::endl;
         }
     }
@@ -134,7 +132,7 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
         int src, dest;
         double weight;
 
-        try{
+        try {
             getline(lineStream, cell, ',');
             src = stoi(cell);
             getline(lineStream, cell, ',');
@@ -142,19 +140,19 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
             getline(lineStream, cell, ',');
             weight = stod(cell);
 
-            if(graph.find(src) == graph.end()){
+            if (graph.find(src) == graph.end()) {
                 graph[src] = new Vertex(src);
             }
-            if(graph.find(dest) == graph.end()){
+            if (graph.find(dest) == graph.end()) {
                 graph[dest] = new Vertex(dest);
             }
 
-            graph[src]->addEdge(new Edge(weight, graph[src],graph[dest]));
+            graph[src]->addEdge(new Edge(weight, graph[src], graph[dest]));
             graph[dest]->addEdge(new Edge(weight, graph[dest], graph[src]));
             graphAdj[src][dest] = weight;
             graphAdj[dest][src] = weight;
 
-        }catch (const std::invalid_argument& e){
+        } catch (const std::invalid_argument &e) {
             std::cout << "Error parsing csv file data [" << cell << "] : " << e.what() << std::endl;
         }
     }
@@ -163,7 +161,6 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
 }
 
 std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>>> GraphLoader::loadExtraFullGraph(const std::string &fileName) {
-
     std::unordered_map<uint16_t, Vertex*> graph;
 
     std::string substr = fileName.substr(fileName.find('_') + 1, fileName.find('.') - fileName.find('_') - 1);
@@ -184,12 +181,12 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
     std::ifstream nodes(geo);
     getline(nodes, line);
     int nodeCount = 0;
-    while(getline(nodes, line) && nodeCount != nodeNumber ){
+    while (getline(nodes, line) && nodeCount != nodeNumber) {
         std::istringstream lineStream(line);
         int id;
         double longitude, latitude;
 
-        try{
+        try {
             getline(lineStream, cell, ',');
             id = stoi(cell);
             getline(lineStream, cell, ',');
@@ -197,38 +194,36 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
             getline(lineStream, cell, ',');
             latitude = stod(cell);
             graph[id] = new Vertex(id, {}, {latitude, longitude});
-
             nodeCount++;
 
-        }catch (const std::invalid_argument& e){
+        } catch (const std::invalid_argument &e) {
             std::cout << "Error parsing csv file data [" << cell << "] : " << e.what() << std::endl;
         }
     }
-
 
     while (getline(file, line)) {
         std::istringstream lineStream(line);
         int src, dest;
         double weight;
 
-        try{
+        try {
             getline(lineStream, cell, ',');
             src = std::stoi(cell);
             getline(lineStream, cell, ',');
             dest = std::stoi(cell);
             getline(lineStream, cell);
             weight = std::stod(cell);
-        }catch (const std::invalid_argument& e){
+        } catch (const std::invalid_argument &e) {
             std::cout << "Error parsing csv file data [" << cell << "] : " << e.what() << std::endl;
         }
 
-        if(graph.find(src) == graph.end()){
+        if (graph.find(src) == graph.end()) {
             graph[src] = new Vertex(src);
         }
-        if(graph.find(dest) == graph.end()){
+        if (graph.find(dest) == graph.end()) {
             graph[dest] = new Vertex(dest);
         }
-        graph[src]->addEdge(new Edge(weight, graph[src],graph[dest]));
+        graph[src]->addEdge(new Edge(weight, graph[src], graph[dest]));
         graph[dest]->addEdge(new Edge(weight, graph[dest], graph[src]));
 
         graphAdj[src][dest] = weight;
@@ -238,4 +233,3 @@ std::pair<std::unordered_map<uint16_t, Vertex*>, std::vector<std::vector<double>
     file.close();
     return {graph, graphAdj};
 }
-

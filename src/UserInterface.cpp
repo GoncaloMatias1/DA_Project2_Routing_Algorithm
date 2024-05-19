@@ -12,14 +12,14 @@ void UserInterface::bootload() {
     this->displayMainMenu();
 }
 
-
 void UserInterface::displayMainMenu() {
     char choice;
     std::cout << "1. Load Graph\n";
     std::cout << "2. Execute TSP Backtracking\n";
     std::cout << "3. Execute Triangular Approximation\n";
     std::cout << "4. Execute Cluster Approximation\n";
-    std::cout << "5. Exit\n";
+    std::cout << "5. Execute TSP for Disconnected Graph\n";
+    std::cout << "6. Exit\n";
     std::cout << "Enter choice: ";
     std::cin >> choice;
     switch (choice - '0') {
@@ -37,8 +37,13 @@ void UserInterface::displayMainMenu() {
             return;
         case 4:
             this->displayClusterApproximationResult();
+            displayMainMenu();
             return;
         case 5:
+            this->displayTSPForDisconnectedGraphResult();
+            displayMainMenu();
+            return;
+        case 6:
             this->displayFarewell();
             return;
         default:
@@ -55,9 +60,9 @@ void UserInterface::displayLoadGraphMenu() {
     std::cout << "4. Exit\n";
     std::cout << "Enter choice: ";
     std::cin >> choice;
-    try{
+    try {
         std::stoi(choice);
-    }catch (const std::invalid_argument& e){
+    } catch (const std::invalid_argument& e) {
         std::cout << "Invalid choice!\n";
         displayLoadGraphMenu();
     }
@@ -84,77 +89,92 @@ void UserInterface::displayLoadGraphMenu() {
     }
 }
 
-
 void UserInterface::displayTriangularApproximationResult() {
-    if(this->controller == nullptr) this->displayLoadGraphMenu();
+    if (this->controller == nullptr) this->displayLoadGraphMenu();
     auto result = this->controller->triangleInequalityApp();
-    std::cout << "The cost is "  << result.first << std::endl;
+    std::cout << "The cost is " << result.first << std::endl;
     std::cout << "With the following path: ";
-    for(Vertex* vertex:result.second ){
-        std::cout <<  vertex->getId() <<", ";
+    for (Vertex* vertex : result.second) {
+        std::cout << vertex->getId() << ", ";
     }
     std::cout << std::endl;
 }
 
-const std::string & UserInterface::getToyGraph() {
+const std::string& UserInterface::getToyGraph() {
     std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
     auto pair = this->graphLoader->loadToyGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
-
+    return filename;
 }
-const std::string & UserInterface::getRealGraph() {
+
+const std::string& UserInterface::getRealGraph() {
     std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
     auto pair = this->graphLoader->loadRealGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
+    return filename;
 }
-const std::string & UserInterface::getExtraFullGraph() {
 
+const std::string& UserInterface::getExtraFullGraph() {
     std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
     auto pair = this->graphLoader->loadExtraFullGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
-
+    return filename;
 }
 
 void UserInterface::displayBacktrackingResult() {
-    if(this->controller == nullptr) this->displayLoadGraphMenu();
+    if (this->controller == nullptr) this->displayLoadGraphMenu();
     std::pair<double, std::vector<uint16_t>> path = controller->minHamiltonianCicle();
     std::cout << "For the given graph the minimum cost for a hamiltonian cycle is " << path.first << std::endl;
     std::cout << "With the following path: ";
-    for(uint16_t idx:path.second ){
-        std::cout <<  idx <<", ";
+    for (uint16_t idx : path.second) {
+        std::cout << idx << ", ";
     }
     std::cout << std::endl;
 }
 
 void UserInterface::displayClusterApproximationResult() {
-    if(this->controller == nullptr) this->displayLoadGraphMenu();
+    if (this->controller == nullptr) this->displayLoadGraphMenu();
     std::pair<double, std::vector<uint16_t>> path = controller->clusterHeuristic();
     std::cout << "For the given graph the cluster approximation is " << path.first << std::endl;
     std::cout << "With the following path: ";
-    for(uint16_t idx:path.second ){
-        std::cout <<  idx <<", ";
+    for (uint16_t idx : path.second) {
+        std::cout << idx << ", ";
     }
     std::cout << std::endl;
 }
 
-
+void UserInterface::displayTSPForDisconnectedGraphResult() {
+    if (this->controller == nullptr) this->displayLoadGraphMenu();
+    uint16_t startNode;
+    std::cout << "Enter starting node: ";
+    std::cin >> startNode;
+    auto result = this->controller->solveTSPForDisconnectedGraph(startNode);
+    if (result.first == std::numeric_limits<double>::infinity()) {
+        std::cout << "No path exists that visits all nodes and returns to the origin.\n";
+    } else {
+        std::cout << "The cost is " << result.first << std::endl;
+        std::cout << "With the following path: ";
+        for (uint16_t node : result.second) {
+            std::cout << node << ", ";
+        }
+        std::cout << std::endl;
+    }
+}
 
 void UserInterface::displayFarewell() {
-    // Color codes for ANSI escape sequences
     const std::string RESET_COLOR = "\033[0m";
     const std::string BOLD = "\033[1m";
     const std::string GREEN_COLOR = "\033[32m";
 
-    // Farewell message
     std::cout << GREEN_COLOR << BOLD;
     std::cout << std::setw(60) << " ____   ___  _   _ _____ _____    __  _____   __   " << std::endl;
     std::cout << std::setw(60) << "|  _ \\ / _ \\| | | |_   _| ____|   \\ \\/ ( _ ) / /_  " << std::endl;
@@ -169,10 +189,3 @@ void UserInterface::displayFarewell() {
     std::cout << std::setw(80) << "We specialize in Routing Algorithms for Ocean Shipping and Urban Deliveries." << std::endl;
     std::cout << std::setw(48) << "Have a safe journey ahead!" << RESET_COLOR << std::endl;
 }
-
-
-
-
-
-
-

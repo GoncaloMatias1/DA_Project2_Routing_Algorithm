@@ -78,7 +78,7 @@ double GraphController::haversine(Coordinate coo1, Coordinate coo2) {
 std::pair<double, std::vector<Vertex*>> GraphController::triangleInequalityApp() {
     auto t1 = std::chrono::high_resolution_clock::now();
 
-   this->getMSTPrim(0, this->graph);
+    this->getMSTPrim(0, this->graph);
     std::vector<Vertex*> preorder = this->preOrderWalk(this->graph);
 
     double cost = this->getCostFromWalk(preorder, this->graph);
@@ -87,9 +87,7 @@ std::pair<double, std::vector<Vertex*>> GraphController::triangleInequalityApp()
 
     return {cost , preorder};
 
- }
-
-
+}
 
 void GraphController::getMSTPrim(int root, std::unordered_map<uint16_t, Vertex*>& graph_) {
     if(graph_.empty()) return ;
@@ -135,8 +133,6 @@ void GraphController::getMSTPrim(int root, std::unordered_map<uint16_t, Vertex*>
     }
     return;
 }
-
-
 
 std::vector<Vertex*> GraphController::preOrderWalk(std::unordered_map<uint16_t, Vertex*>& graph_) {
     std::vector<Vertex*> result;
@@ -202,10 +198,8 @@ std::pair<double, std::vector<uint16_t>> GraphController::clusterHeuristic() {
     return finalTour;
 }
 
-
 double GraphController::getCostFromWalk(std::vector<Vertex *> walk, std::unordered_map<uint16_t, Vertex *> &graph) {
     double cost = 0;
-
 
     for(uint16_t i = 1; i < walk.size(); i++){
         Vertex* last = walk[i-1];
@@ -231,7 +225,6 @@ double GraphController::getCostFromWalk(std::vector<Vertex *> walk, std::unorder
         if(dist == std::numeric_limits<double>::infinity()) dist = 0;
         std::cout << "Graph is not fully connected!Results can be inaccurate!\n";
     }
-
 
     cost += dist;
     return cost;
@@ -346,14 +339,12 @@ void GraphController::tourNNFromCluster(Cluster &cluster) {
             }
         }
 
-
         nodes.erase(currNode);
         cluster.tour.push_back(currNode);
         currNode = minVertex;
         if(minDistance == std::numeric_limits<double>::infinity()) break;
         cluster.tourCost += minDistance;
     }
-
 }
 
 // connect clusters endpoints
@@ -400,7 +391,6 @@ std::pair<double, std::vector<uint16_t>> GraphController::tourNNInterClusters(Cl
     }
 
     return {totalInterClusterCost, interClusterTour};
-
 }
 
 std::pair<double, std::vector<uint16_t>> GraphController::fullNN() {
@@ -436,6 +426,74 @@ std::pair<double, std::vector<uint16_t>> GraphController::fullNN() {
 
     // compute trace back
     if(this->graphAdj[tour.front()][tour.back()] != std::numeric_limits<double>::infinity()){
+        tourCost += this->graphAdj[tour.front()][tour.back()];
+    }
+
+    return {tourCost, tour};
+}
+
+bool GraphController::isConnectedGraph() {
+    if (graph.empty()) return false;
+    std::unordered_set<uint16_t> visited;
+    std::queue<uint16_t> q;
+    q.push(graph.begin()->first);
+    visited.insert(graph.begin()->first);
+
+    while (!q.empty()) {
+        uint16_t current = q.front();
+        q.pop();
+
+        for (Edge* edge : graph[current]->getAdj()) {
+            uint16_t neighbor = edge->getDestination()->getId();
+            if (visited.find(neighbor) == visited.end()) {
+                visited.insert(neighbor);
+                q.push(neighbor);
+            }
+        }
+    }
+
+    return visited.size() == graph.size();
+}
+
+std::pair<double, std::vector<uint16_t>> GraphController::solveTSPForDisconnectedGraph(uint16_t startNode) {
+    if (!isConnectedGraph()) {
+        return {std::numeric_limits<double>::infinity(), {}};
+    }
+    return findTSPForDisconnectedGraph(graph[startNode]);
+}
+
+std::pair<double, std::vector<uint16_t>> GraphController::findTSPForDisconnectedGraph(Vertex* startVertex) {
+    std::set<uint16_t> nodes;
+    std::vector<uint16_t> tour;
+    double tourCost = 0;
+
+    for (const auto& v : graph) {
+        nodes.insert(v.first);
+    }
+
+    uint16_t currNode = startVertex->getId();
+    while (!nodes.empty()) {
+        double minDistance = std::numeric_limits<double>::infinity();
+        uint16_t minVertex;
+
+        for (uint16_t adjNode : nodes) {
+            if (adjNode == currNode) continue;
+
+            double distance = this->graphAdj[currNode][adjNode];
+            if (distance < minDistance) {
+                minVertex = adjNode;
+                minDistance = distance;
+            }
+        }
+
+        nodes.erase(currNode);
+        tour.push_back(currNode);
+        currNode = minVertex;
+        if (minDistance == std::numeric_limits<double>::infinity()) break;
+        tourCost += minDistance;
+    }
+
+    if (this->graphAdj[tour.front()][tour.back()] != std::numeric_limits<double>::infinity()) {
         tourCost += this->graphAdj[tour.front()][tour.back()];
     }
 
