@@ -69,13 +69,13 @@ void UserInterface::displayLoadGraphMenu() {
         switch (choice[0] - '0') {
             case 1:
                 this->getToyGraph();
-                break;
+                return;
             case 2:
                 this->getRealGraph();
-                break;
+                return;
             case 3:
                 this->getExtraFullGraph();
-                break;
+                return;
             case 4:
                 return;
             default:
