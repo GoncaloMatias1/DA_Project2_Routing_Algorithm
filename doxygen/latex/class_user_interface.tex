@@ -1,0 +1,101 @@
+\hypertarget{class_user_interface}{}\doxysection{User\+Interface Class Reference}
+\label{class_user_interface}\index{UserInterface@{UserInterface}}
+
+
+Manages the user interface for the ROUTE\+\_\+\+X86 application.  
+
+
+
+
+{\ttfamily \#include $<$User\+Interface.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_user_interface_ae6fb70370701b3bd6120e923df9705b0}\label{class_user_interface_ae6fb70370701b3bd6120e923df9705b0}} 
+\mbox{\hyperlink{class_user_interface_ae6fb70370701b3bd6120e923df9705b0}{User\+Interface}} ()
+\begin{DoxyCompactList}\small\item\em Constructs a \mbox{\hyperlink{class_user_interface}{User\+Interface}} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_a132363d49b956d04a8752dbdba7af8d8}\label{class_user_interface_a132363d49b956d04a8752dbdba7af8d8}} 
+void \mbox{\hyperlink{class_user_interface_a132363d49b956d04a8752dbdba7af8d8}{bootload}} ()
+\begin{DoxyCompactList}\small\item\em Boots the application and displays the main menu. \end{DoxyCompactList}\item 
+const std\+::string \& \mbox{\hyperlink{class_user_interface_af04fa4467a40694e82efd0f249479b89}{get\+Toy\+Graph}} ()
+\begin{DoxyCompactList}\small\item\em Loads a toy graph from a file. \end{DoxyCompactList}\item 
+const std\+::string \& \mbox{\hyperlink{class_user_interface_acbdf0fd9d643090ad3297ee099e7b4ba}{get\+Real\+Graph}} ()
+\begin{DoxyCompactList}\small\item\em Loads a real-\/world graph from a file. \end{DoxyCompactList}\item 
+const std\+::string \& \mbox{\hyperlink{class_user_interface_a001c44a2eb272152e18af7269c57801d}{get\+Extra\+Full\+Graph}} ()
+\begin{DoxyCompactList}\small\item\em Loads an extra fully connected graph from a file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_a4219d67e52d27547c175bffe81b6227d}\label{class_user_interface_a4219d67e52d27547c175bffe81b6227d}} 
+void \mbox{\hyperlink{class_user_interface_a4219d67e52d27547c175bffe81b6227d}{display\+Main\+Menu}} ()
+\begin{DoxyCompactList}\small\item\em Displays the main menu of the application. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_a3180c62ad47d077bee8acca202e8dfe9}\label{class_user_interface_a3180c62ad47d077bee8acca202e8dfe9}} 
+void \mbox{\hyperlink{class_user_interface_a3180c62ad47d077bee8acca202e8dfe9}{display\+Load\+Graph\+Menu}} ()
+\begin{DoxyCompactList}\small\item\em Displays the menu for loading graphs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_a58f8d84e7aa8e072f96a106c31193ab7}\label{class_user_interface_a58f8d84e7aa8e072f96a106c31193ab7}} 
+void \mbox{\hyperlink{class_user_interface_a58f8d84e7aa8e072f96a106c31193ab7}{display\+Backtracking\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Displays the result of the backtracking TSP algorithm. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_a75e946e1b05fdc13bc23d036d4851b1c}\label{class_user_interface_a75e946e1b05fdc13bc23d036d4851b1c}} 
+void \mbox{\hyperlink{class_user_interface_a75e946e1b05fdc13bc23d036d4851b1c}{display\+Farewell}} ()
+\begin{DoxyCompactList}\small\item\em Displays a farewell message. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_a8cd37a383ab1c082fcfbb21685801232}\label{class_user_interface_a8cd37a383ab1c082fcfbb21685801232}} 
+void \mbox{\hyperlink{class_user_interface_a8cd37a383ab1c082fcfbb21685801232}{display\+Triangular\+Approximation\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Displays the result of the triangular approximation TSP algorithm. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_abe4b460ecd6a31e86fe07927d7a62fd3}\label{class_user_interface_abe4b460ecd6a31e86fe07927d7a62fd3}} 
+void \mbox{\hyperlink{class_user_interface_abe4b460ecd6a31e86fe07927d7a62fd3}{display\+Cluster\+Approximation\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Displays the result of the cluster approximation TSP algorithm. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_a8763866cb1acdaeec4006b1d7e959928}\label{class_user_interface_a8763866cb1acdaeec4006b1d7e959928}} 
+void \mbox{\hyperlink{class_user_interface_a8763866cb1acdaeec4006b1d7e959928}{display\+TSPFor\+Disconnected\+Graph\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Displays the result of the TSP algorithm for disconnected graphs. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_user_interface_a20b605adbbfa467debd5619309b666c7}\label{class_user_interface_a20b605adbbfa467debd5619309b666c7}} 
+void \mbox{\hyperlink{class_user_interface_a20b605adbbfa467debd5619309b666c7}{save\+Path\+To\+File}} (std\+::string function\+Name, std\+::vector$<$ uint16\+\_\+t $>$ path, double cost)
+\begin{DoxyCompactList}\small\item\em Saves the path to a file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the user interface for the ROUTE\+\_\+\+X86 application. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_user_interface_a001c44a2eb272152e18af7269c57801d}\label{class_user_interface_a001c44a2eb272152e18af7269c57801d}} 
+\index{UserInterface@{UserInterface}!getExtraFullGraph@{getExtraFullGraph}}
+\index{getExtraFullGraph@{getExtraFullGraph}!UserInterface@{UserInterface}}
+\doxysubsubsection{\texorpdfstring{getExtraFullGraph()}{getExtraFullGraph()}}
+{\footnotesize\ttfamily const std\+::string \& User\+Interface\+::get\+Extra\+Full\+Graph (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Loads an extra fully connected graph from a file. 
+
+\begin{DoxyReturn}{Returns}
+The filename of the loaded extra fully connected graph. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_user_interface_acbdf0fd9d643090ad3297ee099e7b4ba}\label{class_user_interface_acbdf0fd9d643090ad3297ee099e7b4ba}} 
+\index{UserInterface@{UserInterface}!getRealGraph@{getRealGraph}}
+\index{getRealGraph@{getRealGraph}!UserInterface@{UserInterface}}
+\doxysubsubsection{\texorpdfstring{getRealGraph()}{getRealGraph()}}
+{\footnotesize\ttfamily const std\+::string \& User\+Interface\+::get\+Real\+Graph (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Loads a real-\/world graph from a file. 
+
+\begin{DoxyReturn}{Returns}
+The filename of the loaded real-\/world graph. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_user_interface_af04fa4467a40694e82efd0f249479b89}\label{class_user_interface_af04fa4467a40694e82efd0f249479b89}} 
+\index{UserInterface@{UserInterface}!getToyGraph@{getToyGraph}}
+\index{getToyGraph@{getToyGraph}!UserInterface@{UserInterface}}
+\doxysubsubsection{\texorpdfstring{getToyGraph()}{getToyGraph()}}
+{\footnotesize\ttfamily const std\+::string \& User\+Interface\+::get\+Toy\+Graph (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Loads a toy graph from a file. 
+
+\begin{DoxyReturn}{Returns}
+The filename of the loaded toy graph. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/User\+Interface.\+h\item 
+src/User\+Interface.\+cpp\end{DoxyCompactItemize}

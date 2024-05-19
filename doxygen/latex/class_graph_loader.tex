@@ -1,0 +1,86 @@
+\hypertarget{class_graph_loader}{}\doxysection{Graph\+Loader Class Reference}
+\label{class_graph_loader}\index{GraphLoader@{GraphLoader}}
+
+
+Loads different types of graphs from files.  
+
+
+
+
+{\ttfamily \#include $<$Graph\+Loader.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::pair$<$ std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$, std\+::vector$<$ std\+::vector$<$ double $>$ $>$ $>$ \mbox{\hyperlink{class_graph_loader_a8941ed9434388f12ef5001a47099a336}{load\+Toy\+Graph}} (const std\+::string \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Loads a toy graph from a CSV file. \end{DoxyCompactList}\item 
+std\+::pair$<$ std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$, std\+::vector$<$ std\+::vector$<$ double $>$ $>$ $>$ \mbox{\hyperlink{class_graph_loader_a7f762f559575c0c327ffbb95580a9603}{load\+Real\+Graph}} (const std\+::string \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Loads a real-\/world graph from CSV files. \end{DoxyCompactList}\item 
+std\+::pair$<$ std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$, std\+::vector$<$ std\+::vector$<$ double $>$ $>$ $>$ \mbox{\hyperlink{class_graph_loader_ad7b754fed68424646544ea54cd3eb2a2}{load\+Extra\+Full\+Graph}} (const std\+::string \&file\+Name)
+\begin{DoxyCompactList}\small\item\em Loads a fully connected graph from a CSV file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Loads different types of graphs from files. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_graph_loader_ad7b754fed68424646544ea54cd3eb2a2}\label{class_graph_loader_ad7b754fed68424646544ea54cd3eb2a2}} 
+\index{GraphLoader@{GraphLoader}!loadExtraFullGraph@{loadExtraFullGraph}}
+\index{loadExtraFullGraph@{loadExtraFullGraph}!GraphLoader@{GraphLoader}}
+\doxysubsubsection{\texorpdfstring{loadExtraFullGraph()}{loadExtraFullGraph()}}
+{\footnotesize\ttfamily std\+::pair$<$ std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$, std\+::vector$<$ std\+::vector$<$ double $>$ $>$ $>$ Graph\+Loader\+::load\+Extra\+Full\+Graph (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+Name }\end{DoxyParamCaption})}
+
+
+
+Loads a fully connected graph from a CSV file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & The name of the CSV file (without extension). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pair containing the graph and its adjacency matrix. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_loader_a7f762f559575c0c327ffbb95580a9603}\label{class_graph_loader_a7f762f559575c0c327ffbb95580a9603}} 
+\index{GraphLoader@{GraphLoader}!loadRealGraph@{loadRealGraph}}
+\index{loadRealGraph@{loadRealGraph}!GraphLoader@{GraphLoader}}
+\doxysubsubsection{\texorpdfstring{loadRealGraph()}{loadRealGraph()}}
+{\footnotesize\ttfamily std\+::pair$<$ std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$, std\+::vector$<$ std\+::vector$<$ double $>$ $>$ $>$ Graph\+Loader\+::load\+Real\+Graph (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+Name }\end{DoxyParamCaption})}
+
+
+
+Loads a real-\/world graph from CSV files. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & The name of the directory containing the CSV files. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pair containing the graph and its adjacency matrix. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_loader_a8941ed9434388f12ef5001a47099a336}\label{class_graph_loader_a8941ed9434388f12ef5001a47099a336}} 
+\index{GraphLoader@{GraphLoader}!loadToyGraph@{loadToyGraph}}
+\index{loadToyGraph@{loadToyGraph}!GraphLoader@{GraphLoader}}
+\doxysubsubsection{\texorpdfstring{loadToyGraph()}{loadToyGraph()}}
+{\footnotesize\ttfamily std\+::pair$<$ std\+::unordered\+\_\+map$<$ uint16\+\_\+t, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$, std\+::vector$<$ std\+::vector$<$ double $>$ $>$ $>$ Graph\+Loader\+::load\+Toy\+Graph (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+Name }\end{DoxyParamCaption})}
+
+
+
+Loads a toy graph from a CSV file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Name} & The name of the CSV file (without extension). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pair containing the graph and its adjacency matrix. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/Graph\+Loader.\+h\item 
+src/Graph\+Loader.\+cpp\end{DoxyCompactItemize}
