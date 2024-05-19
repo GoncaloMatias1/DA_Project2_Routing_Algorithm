@@ -10,6 +10,9 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 /**
  * @class UserInterface

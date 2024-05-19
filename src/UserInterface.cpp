@@ -178,6 +178,16 @@ void UserInterface::displayFarewell() {
 }
 
 void UserInterface::savePathToFile(std::string functionName, std::vector<uint16_t> path, double cost) {
+
+    std::string dirName = "../output";
+
+    if (!fs::exists(dirName)) {
+        std::cout << "Creating output directory...\n";
+        if(!fs::create_directory(dirName)){
+            std::cout << "Couldn't create directory, please manually create 'output' directory"<<std::endl;
+        }
+    }
+
     std::ofstream file("../output/" + functionName + "_" + this->filename_  + ".txt");
 
 
