@@ -98,6 +98,7 @@ const std::string& UserInterface::getToyGraph() {
     static std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
+    this->filename_ = filename;
     auto pair = this->graphLoader->loadToyGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
@@ -108,6 +109,7 @@ const std::string& UserInterface::getRealGraph() {
     static std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
+    this->filename_ = filename;
     auto pair = this->graphLoader->loadRealGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
@@ -118,6 +120,7 @@ const std::string& UserInterface::getExtraFullGraph() {
     static std::string filename;
     std::cout << "Enter filename: ";
     std::cin >> filename;
+    this->filename_ = filename;
     auto pair = this->graphLoader->loadExtraFullGraph(filename);
     this->controller = new GraphController(pair.first, pair.second);
     std::cout << "Graph loaded successfully.\n";
