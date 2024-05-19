@@ -178,8 +178,8 @@ void UserInterface::displayFarewell() {
 }
 
 void UserInterface::savePathToFile(std::string functionName, std::vector<uint16_t> path, double cost) {
-
     std::ofstream file("../output/" + functionName + "_" + this->filename_  + ".txt");
+
 
     if (file.is_open()) {
         file << "Function Name: " << functionName << std::endl;
