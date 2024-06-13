@@ -6,6 +6,8 @@
 
 Developed for the Design of Algorithms course (Spring 2024) at the University of Porto, this project focuses on analyzing and solving the Travelling Salesperson Problem (TSP) in the context of ocean shipping and urban deliveries. It utilizes various heuristic approaches to efficiently handle complex routing problems that are otherwise intractable due to their size and constraints.
 
+**Grade:** 17.7/20
+
 ## Team Members
 
 - Rodrigo Ferreira Alves - up202207478
